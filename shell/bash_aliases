@@ -1,0 +1,121 @@
+# shellcheck shell=bash
+# ------------------------------- #
+# Here Be Aliases (And Functions) #
+# ------------------------------- #
+
+# ---------- #
+# Ls aliases #
+# ---------- #
+alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M" --color=auto'
+alias ll='ls --almost-all -l --classify --human-readable'
+alias la='ls --almost-all'
+alias l='ls -C --classify'
+alias lt='ls --human-readable --size -1 -S --classify'
+
+# ------------ #
+# Grep aliases #
+# ------------ #
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias hgrep='history | grep'
+
+# ------------------ #
+# Navigation aliases #
+# ------------------ #
+alias ..='cd ../'
+alias ...='cd../../'
+alias ....='cd../../../'
+alias ~='cd ~'
+
+function -() {
+	builtin cd - || exit 1
+}
+
+# ---------------------------------------------------------------------------- #
+# Fuzzy Finder CD                                                              #
+# Wraps builtin cd, launching fzf from / when no target directory is specified #
+# ---------------------------------------------------------------------------- #
+function cd() {
+	if [ -n "$1" ]; then
+		builtin cd "$1" || exit 1
+	else
+		local DIR
+		DIR=$(find / -type d 2>/dev/null | fzf --preview 'tree {}')
+		if [ -n "$DIR" ]; then
+			builtin cd "$DIR" || exit 1
+		fi
+	fi
+}
+
+# ------------------------------------------------------------------ #
+# dstack: Add directories to the stack to cd back to at a later time #
+# dpop: cd to the directory at the top of the stack                  #
+# ------------------------------------------------------------------ #
+function dstack() {
+	realpath "$PWD" >>"${TMPDIR:-/tmp}/dstack.$USER"
+	local STACK_SIZE
+	STACK_SIZE=$(wc -l "${TMPDIR:-/tmp}/dstack.$USER" | cut -f 1 -d " ")
+	echo "Added $(realpath "$PWD") to the stack."
+	if (("$STACK_SIZE" >= 2)); then
+		echo "There are currently $STACK_SIZE directories on the stack."
+	else
+		echo "There is currently $STACK_SIZE directory on the stack."
+	fi
+}
+
+function dpop() {
+	if [ -f "${TMPDIR:-/tmp}/dstack.$USER" ]; then
+		local STACK_SIZE
+		STACK_SIZE=$(wc -l "${TMPDIR:-/tmp}/dstack.$USER" | cut -f 1 -d " ")
+		if (("$STACK_SIZE" >= 1)); then
+			local STACK_TOP
+			STACK_TOP=$(tail -n 1 "${TMPDIR:-/tmp}/dstack.$USER" | tee >(wc -c | xargs -I {} truncate "${TMPDIR:-/tmp}/dstack.$USER" -s -{})) &&
+				cd "$STACK_TOP" &&
+				echo "Popped $STACK_TOP from the stack." && {
+				if (("$STACK_SIZE" >= 3)); then
+					echo "There are currently $((--STACK_SIZE)) directories on the stack."
+				elif [[ "$STACK_SIZE" == 2 ]]; then
+					echo "There is currently $((--STACK_SIZE)) directory on the stack."
+				else
+					echo "The directory stack is empty."
+				fi
+			}
+		else
+			echo "The directory stack is empty."
+			exit 1
+		fi
+	fi
+}
+
+# ----------------- #
+# Vim style aliases #
+# ----------------- #
+alias :q='exit 0'
+alias :e='$VISUAL'
+
+# -------------------- #
+# Drop-In Replacements #
+# -------------------- #
+alias vim='nvim'
+alias vi='nvim'
+
+# ---------------- #
+# Shell Cheatsheet #
+# ---------------- #
+function cs() {
+	curl -s "https://cht.sh/$1?qT&style=bw"
+}
+
+# ----------- #
+# Easier Open #
+# ----------- #
+alias open='xdg-open'
+
+# ----------- #
+# Quick Edits #
+# ----------- #
+alias bashrc='$VISUAL ~/.bashrc && source ~/.bashrc'
+alias vimrc='$VISUAL ~/.config/nvim/init.lua'
+
+# vim: set filetype=bash:
