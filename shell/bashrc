@@ -102,6 +102,6 @@ export HISTCONTROL=ignoreboth # Ignore empty & duplicate content
 export HISTSIZE=1000
 export HISTFILESIZE=${HISTSIZE}
 export HISTTIMEFORMAT="[%Y-%m-%d %T] " # Change date format to YYYY-mm-dd
-export HISTIGNORE="&:ls:ll:la:l:lt:pwd:exit:\:q:history:grep"
+export HISTIGNORE="&:ls:ll:la:l:lt:pwd:exit:\:e\:q:history:grep"
 
 # vim: set filetype=bash:
