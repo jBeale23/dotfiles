@@ -29,63 +29,7 @@ alias ....='cd../../../'
 alias ~='cd ~'
 
 function -() {
-	builtin cd - || exit 1
-}
-
-# ---------------------------------------------------------------------------- #
-# Fuzzy Finder CD                                                              #
-# Wraps builtin cd, launching fzf from / when no target directory is specified #
-# ---------------------------------------------------------------------------- #
-function cd() {
-	if [ -n "$1" ]; then
-		builtin cd "$1" || exit 1
-	else
-		local DIR
-		DIR=$(find / -type d 2>/dev/null | fzf --preview 'tree {}')
-		if [ -n "$DIR" ]; then
-			builtin cd "$DIR" || exit 1
-		fi
-	fi
-}
-
-# ------------------------------------------------------------------ #
-# dstack: Add directories to the stack to cd back to at a later time #
-# dpop: cd to the directory at the top of the stack                  #
-# ------------------------------------------------------------------ #
-function dstack() {
-	realpath "$PWD" >>"${TMPDIR:-/tmp}/dstack.$USER"
-	local STACK_SIZE
-	STACK_SIZE=$(wc -l "${TMPDIR:-/tmp}/dstack.$USER" | cut -f 1 -d " ")
-	echo "Added $(realpath "$PWD") to the stack."
-	if (("$STACK_SIZE" >= 2)); then
-		echo "There are currently $STACK_SIZE directories on the stack."
-	else
-		echo "There is currently $STACK_SIZE directory on the stack."
-	fi
-}
-
-function dpop() {
-	if [ -f "${TMPDIR:-/tmp}/dstack.$USER" ]; then
-		local STACK_SIZE
-		STACK_SIZE=$(wc -l "${TMPDIR:-/tmp}/dstack.$USER" | cut -f 1 -d " ")
-		if (("$STACK_SIZE" >= 1)); then
-			local STACK_TOP
-			STACK_TOP=$(tail -n 1 "${TMPDIR:-/tmp}/dstack.$USER" | tee >(wc -c | xargs -I {} truncate "${TMPDIR:-/tmp}/dstack.$USER" -s -{})) &&
-				cd "$STACK_TOP" &&
-				echo "Popped $STACK_TOP from the stack." && {
-				if (("$STACK_SIZE" >= 3)); then
-					echo "There are currently $((--STACK_SIZE)) directories on the stack."
-				elif [[ "$STACK_SIZE" == 2 ]]; then
-					echo "There is currently $((--STACK_SIZE)) directory on the stack."
-				else
-					echo "The directory stack is empty."
-				fi
-			}
-		else
-			echo "The directory stack is empty."
-			exit 1
-		fi
-	fi
+	cd - || return $?
 }
 
 # ----------------- #
@@ -99,6 +43,7 @@ alias :e='$VISUAL'
 # -------------------- #
 alias vim='nvim'
 alias vi='nvim'
+alias cd='de'
 
 # ---------------- #
 # Shell Cheatsheet #

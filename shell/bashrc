@@ -24,14 +24,14 @@ shopt -s hostcomplete   # Attempts hostname completion when @ is present in a st
 # Completions #
 # ----------- #
 if [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
+  . /etc/bash_completion
 fi
 
 # ------- #
 # Aliases #
 # ------- #
 if [ -e "$HOME"/.bash_aliases ]; then
-	. "$HOME/.bash_aliases"
+  . "$HOME/.bash_aliases"
 fi
 
 # ----------------- #
@@ -53,9 +53,9 @@ bind "set vi-cmd-mode-string \001\033[1;33m\002[COMMAND] \001\033[0m\002"
 PROMPT_DIRTRIM=2
 
 function parseVenv() {
-	if [ -n "$venv" ]; then
-		echo -e "\001\033[1;34m\002(\001\033[1;36m\002$venv\001\003[1;34m\002) "
-	fi
+  if [ -n "$venv" ]; then
+    echo -e "\001\033[1;34m\002(\001\033[1;36m\002$venv\001\003[1;34m\002) "
+  fi
 }
 
 PS1='\001\033[1;34m\002[\001\033[1;37m\002\t\001\033[1;34m\002] $(parseVenv)\001\033[0m\002\u\001\033[1;34m\002@\001\033[0m\002\h\n\001\033[1;37m\002\w\001\033[0m\002 '
@@ -65,9 +65,9 @@ PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
 # ------------------ #
 # Navigation Helpers #
 # ------------------ #
-__currentDir="$HOME"
-__noLS=0                                                     # Set to anything else to disable auto ls after CD until unset
-PROMPT_COMMAND='[[ $__currentDir != $PWD && $__noLS == 0 ]] && ls; __currentDir=$PWD' # ls after cd
+if [ -f "$HOME/repositories/directory-explorer/de" ]; then
+  . "$HOME/repositories/directory-explorer/de"
+fi
 
 # --------- #
 # ENV Setup #
@@ -88,11 +88,11 @@ export LANG="en_US.UTF-8"
 # User-Made Executables and Scripts #
 # --------------------------------- #
 if [ -d "$HOME/bin" ]; then
-	export PATH="$HOME/bin:$PATH"
+  export PATH="$HOME/bin:$PATH"
 fi
 
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
 fi
 
 # --------------------- #
