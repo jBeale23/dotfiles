@@ -65,8 +65,8 @@ PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
 # ------------------ #
 # Navigation Helpers #
 # ------------------ #
-if [ -f "$HOME/repositories/directory-explorer/de" ]; then
-  . "$HOME/repositories/directory-explorer/de"
+if [ -f "$HOME/repositories/directory-explorer/directory-explorer.sh" ]; then
+  . "$HOME/repositories/directory-explorer/directory-explorer.sh"
 fi
 
 # --------- #
