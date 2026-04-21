@@ -5,4 +5,5 @@ Currently includes configuration for the following:
   - X11
   - picom
   - udiskie
+- Mamba
 - Neovim
