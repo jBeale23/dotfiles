@@ -60,3 +60,5 @@ if [[ "$HAS_GIT" -eq 0 && -d "$REPOSITORY_DIR" ]]; then
     echo "INFO: Directory Explorer is already installed." >&2
   fi
 fi
+
+echo "Setup Complete. Please restart your shell or source ~/.bashrc for changes to take effect."
