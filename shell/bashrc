@@ -72,8 +72,20 @@ export XDG_DOCUMENTS_DIR="$HOME/Documents"
 
 export TMPDIR="/tmp"
 
-export EDITOR="nvim"
-export VISUAL="$EDITOR"
+if nvim --version >/dev/null 2>&1; then
+	export EDITOR="nvim"
+elif vim --version >/dev/null 2>&1; then
+	export EDITOR="vim"
+elif vi --version >/dev/null 2>&1; then
+	export EDITOR="vi"
+elif nano --version >/dev/null 2>&1; then
+	export EDITOR="nano"
+else
+	echo "WARNING: EDITOR could not be set." >&2
+fi
+if [ -n "$EDITOR" ]; then
+	export VISUAL="$EDITOR"
+fi
 
 export LANG="en_US.UTF-8"
 
