@@ -29,7 +29,7 @@ alias ....='cd../../../'
 alias ~='cd ~'
 
 function -() {
-	cd - || return $?
+  cd - || return $?
 }
 
 # ----------------- #
@@ -43,13 +43,15 @@ alias :e='$VISUAL'
 # -------------------- #
 alias vim='nvim'
 alias vi='nvim'
-alias cd='de'
+if [ -f "$REPOSITORY_DIR/directory-explorer/directory-explorer.sh" ]; then
+  alias cd='de'
+fi
 
 # ---------------- #
 # Shell Cheatsheet #
 # ---------------- #
 function cs() {
-	curl -s "https://cht.sh/$1?qT&style=bw"
+  curl -s "https://cht.sh/$1?qT&style=bw"
 }
 
 # ----------- #
