@@ -62,13 +62,6 @@ PS1='\001\033[1;34m\002[\001\033[1;37m\002\t\001\033[1;34m\002] $(parseVenv)\001
 
 PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
 
-# ------------------ #
-# Navigation Helpers #
-# ------------------ #
-if [ -f "$HOME/repositories/directory-explorer/directory-explorer.sh" ]; then
-  . "$HOME/repositories/directory-explorer/directory-explorer.sh"
-fi
-
 # --------- #
 # ENV Setup #
 # --------- #
@@ -89,6 +82,13 @@ if [ -d "$HOME/repositories" ]; then
   export RESPOSITORY_DIR="$HOME/repositories"
 elif [ -d "$XDG_DOCUMENTS_DIR/repositories" ]; then
   export RESPOSITORY_DIR="$XDG_DOCUMENTS_DIR/repositories"
+fi
+
+# ------------------ #
+# Navigation Helpers #
+# ------------------ #
+if [ -f "$REPOSITORY_DIR/directory-explorer/directory-explorer.sh" ]; then
+  . "$REPOSITORY_DIR/directory-explorer/directory-explorer.sh"
 fi
 
 # --------------------------------- #
