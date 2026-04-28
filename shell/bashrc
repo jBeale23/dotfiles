@@ -130,17 +130,12 @@ fi
 # --------------------------------- #
 # User-Made Executables and Scripts #
 # --------------------------------- #
-if [ -d "$HOME/bin" ]; then
-  export PATH="$HOME/bin:$PATH"
-fi
-
-if [ -d "$HOME/.bin" ]; then
-  export PATH="$HOME/.bin:$PATH"
-fi
-
-if [ -d "$HOME/.local/bin" ]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
+# Extends $PATH with all of my common places for self-made executables
+declare -a user_executable_paths
+user_executable_paths=("${HOME}/bin" "${HOME}/.bin" "${HOME}/.local/bin")
+for path in "${user_executable_paths[@]}"; do
+  [[ -d "${path}" ]] && export PATH="${path}:${PATH}"
+done
 
 # --------------------- #
 # History Configuration #
