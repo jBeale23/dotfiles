@@ -89,11 +89,13 @@ fi
 
 export LANG="en_US.UTF-8"
 
-if [ -d "$HOME/repositories" ]; then
-  export REPOSITORY_DIR="$HOME/repositories"
-elif [ -d "$XDG_DOCUMENTS_DIR/repositories" ]; then
-  export REPOSITORY_DIR="$XDG_DOCUMENTS_DIR/repositories"
-fi
+# Exports a singleton repository directory, using my common paths
+declare -a repository_directories
+repository_directories=("${HOME}/repositories" "${XDG_DOCUMENTS_DIR}/repositories")
+for path in "${repository_directories[@]}"; do
+  [[ -d "${path}" ]] && export REPOSITORY_DIR="${path}"
+  break
+done
 
 export MAMBA_EXE="$HOME/.src/miniforge3/bin/mamba"
 export MAMBA_ROOT_PREFIX="$HOME/.src/miniforge3"
