@@ -29,7 +29,8 @@ alias ....='cd../../../'
 alias ~='cd ~'
 
 function -() {
-  cd - || return $?
+  cd - || return ${?}
+}
 
 function gitc() {
   git clone "${1}" || return "${?}"
@@ -40,14 +41,14 @@ function gitc() {
 # Vim style aliases #
 # ----------------- #
 alias :q='exit 0'
-alias :e='$VISUAL'
+alias :e='${VISUAL}'
 
 # -------------------- #
 # Drop-In Replacements #
 # -------------------- #
-alias vim="$VISUAL"
-alias vi="$VISUAL"
-if [ -f "$REPOSITORY_DIR/directory-explorer/directory-explorer.sh" ]; then
+alias vim='${VISUAL}'
+alias vi='{$VISUAL}'
+if [[ -f "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh" ]]; then
   alias cd='de'
 fi
 
