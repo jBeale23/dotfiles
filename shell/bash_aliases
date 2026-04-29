@@ -30,6 +30,10 @@ alias ~='cd ~'
 
 function -() {
   cd - || return $?
+
+function gitc() {
+  git clone "${1}" || return "${?}"
+  cd "$(basename "${1}" .git)" || return "${?}"
 }
 
 # ----------------- #
