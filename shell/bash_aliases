@@ -62,7 +62,9 @@ function cs() {
 # ----------- #
 # Easier Open #
 # ----------- #
-alias open='xdg-open'
+if xdg-open --version &>/dev/null; then
+  alias open='xdg-open'
+fi
 
 # ----------- #
 # Quick Edits #
