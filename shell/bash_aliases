@@ -6,7 +6,11 @@
 # ---------- #
 # Ls aliases #
 # ---------- #
-alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M" --color=auto'
+if ls --color=auto &>/dev/null; then
+  alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M" --color=auto'
+else
+  alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M"'
+fi
 alias ll='ls --almost-all -l --classify --human-readable'
 alias la='ls --almost-all'
 alias l='ls -C --classify'
