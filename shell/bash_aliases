@@ -82,6 +82,17 @@ function gcm() {
   main=$(gmb) || return "${?}"
   git checkout "${main}" && git pull
 }
+
+# ------------------------------------------- #
+#            [G]it [M]erge [M]ain             #
+# Merge the main branch to the current branch #
+# ------------------------------------------- #
+function gmm() {
+  local main
+  main=$(gmb) || return "${?}"
+  git merge "${main}"
+}
+
 # ------------------------------------- #
 #   [G]it [R]epository [C]lone and CD   #
 # Clone a git repository and CD into it #
