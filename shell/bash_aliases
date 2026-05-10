@@ -32,6 +32,9 @@ function -() {
   cd - || return ${?}
 }
 
+# ----------- #
+# Git Aliases #
+# ----------- #
 # [G]it [R]epository [C]lone and CD #
 function grc() {
   git clone "${1}" || return "${?}"
