@@ -19,9 +19,11 @@ alias lt='ls --human-readable --size -1 -S --classify'
 # ------------ #
 # Grep aliases #
 # ------------ #
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+if printf "test" | grep --color=auto "test" &>/dev/null; then
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
 alias hgrep='history | grep'
 
 # ------------------ #
