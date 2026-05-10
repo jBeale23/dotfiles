@@ -132,8 +132,7 @@ fi
 # ----- #
 
 export PYENV_ROOT="${HOME}/.src/pyenv"
-[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:$PATH"
-eval "$(pyenv init - bash)"
+[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:$PATH" && eval "$(pyenv init - bash)"
 
 # --------------------------------- #
 # User-Made Executables and Scripts #
