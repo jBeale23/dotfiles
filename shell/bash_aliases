@@ -52,6 +52,16 @@ function gmb() {
   [[ -n ${main} ]] || return "${status}"
   printf "%s\n" "${main}"
 }
+
+# -------------------------------------------------------------------------- #
+#                            [G]it [N]ew [B]ranch                            #
+# Create a new branch, using $USER-Year-Month-Day if no template is provided #
+# -------------------------------------------------------------------------- #
+function gnb() {
+  local branchname
+  branchname="${1:-$(printf "%s-%(%Y-%m-%d)T" "${USER}" -1)}"
+  git checkout -b "${branchname}"
+}
 # ------------------------------------- #
 #   [G]it [R]epository [C]lone and CD   #
 # Clone a git repository and CD into it #
