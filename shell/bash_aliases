@@ -40,6 +40,18 @@ alias gd='git diff ':!*lock'' # [G]it [D]iff
 alias gdf='git diff'          # [G]it [D]iff [F]ull
 alias gco='git checkout'      # [G]it [C]heck[o]ut
 
+# ------------------------------- #
+#      [G]it [M]ain [B]ranch      #
+# Get the name of the main branch #
+# ------------------------------- #
+function gmb() {
+  local main
+  main=$(git symbolic-ref --short refs/remotes/origin/HEAD)
+  status="${?}"
+  main=${main#origin/}
+  [[ -n ${main} ]] || return "${status}"
+  printf "%s\n" "${main}"
+}
 # ------------------------------------- #
 #   [G]it [R]epository [C]lone and CD   #
 # Clone a git repository and CD into it #
