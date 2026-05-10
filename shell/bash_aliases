@@ -121,7 +121,7 @@ fi
 # Shell Cheatsheet #
 # ---------------- #
 function cs() {
-  curl -s "https://cht.sh/$1?qT&style=bw"
+  curl -s "https://cht.sh/${1}?qT&style=bw"
 }
 
 # ----------- #
@@ -134,7 +134,7 @@ fi
 # ----------- #
 # Quick Edits #
 # ----------- #
-alias bashrc='$VISUAL ~/.bashrc && source ~/.bashrc'
-alias vimrc='$VISUAL ~/.config/nvim/init.lua'
+alias bashrc='${VISUAL} ~/.bashrc && source ~/.bashrc'
+alias vimrc='${VISUAL} ~/.config/nvim/init.lua'
 
 # vim: set filetype=bash:
