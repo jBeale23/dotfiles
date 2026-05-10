@@ -72,6 +72,16 @@ function gbd() {
   main=$(gmb) || return "${?}"
   git diff "${main}..HEAD" "${@}"
 }
+
+# ----------------------------------------- #
+#          [G]it [C]heckout [M]ain          #
+# Checkout the main branch and pull changes #
+# ----------------------------------------- #
+function gcm() {
+  local main
+  main=$(gmb) || return "${?}"
+  git checkout "${main}" && git pull
+}
 # ------------------------------------- #
 #   [G]it [R]epository [C]lone and CD   #
 # Clone a git repository and CD into it #
