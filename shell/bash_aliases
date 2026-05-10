@@ -32,7 +32,8 @@ function -() {
   cd - || return ${?}
 }
 
-function gitc() {
+# [G]it [R]epository [C]lone and CD #
+function grc() {
   git clone "${1}" || return "${?}"
   cd "$(basename "${1}" .git)" || return "${?}"
 }
