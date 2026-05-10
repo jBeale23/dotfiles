@@ -24,7 +24,9 @@ shopt -s hostcomplete   # Attempts hostname completion when @ is present in a st
 # Completions #
 # ----------- #
 if [[ -f /etc/bash_completion ]]; then
-  . /etc/bash_completion
+  . /etc/bash_completion 2>/dev/null
+elif
+  . ~/.bash_completion 2>/dev/null
 fi
 
 # ----------------- #
@@ -112,7 +114,7 @@ fi
 # Aliases #
 # ------- #
 if [[ -e "${HOME}"/.bash_aliases ]]; then
-  . "${HOME}/.bash_aliases"
+  . "${HOME}/.bash_aliases" 2>/dev/null
 fi
 
 # ----- #
