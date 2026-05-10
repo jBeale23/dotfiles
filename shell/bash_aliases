@@ -35,7 +35,15 @@ function -() {
 # ----------- #
 # Git Aliases #
 # ----------- #
-# [G]it [R]epository [C]lone and CD #
+alias gs='git status'         # [G]it [S]tatus
+alias gd='git diff ':!*lock'' # [G]it [D]iff
+alias gdf='git diff'          # [G]it [D]iff [F]ull
+alias gco='git checkout'      # [G]it [C]heck[o]ut
+
+# ------------------------------------- #
+#   [G]it [R]epository [C]lone and CD   #
+# Clone a git repository and CD into it #
+# ------------------------------------- #
 function grc() {
   git clone "${1}" || return "${?}"
   cd "$(basename "${1}" .git)" || return "${?}"
