@@ -24,7 +24,7 @@ elif vi --version >/dev/null 2>&1; then
 elif nano --version >/dev/null 2>&1; then
   export EDITOR="nano"
 else
-  echo "WARNING: EDITOR could not be set." >&2
+  printf "WARNING: EDITOR could not be set.\n" >&2
 fi
 if [[ -n "${EDITOR}" ]]; then
   export VISUAL="${EDITOR}"
@@ -132,13 +132,13 @@ PROMPT_DIRTRIM=2
 
 function parseVenv() {
   if [[ -n "${venv}" ]]; then
-    echo -e "\001\033[1;34m\002(\001\033[1;36m\002${venv}\001\033[1;34m\002) "
+    printf "\001\033[1;34m\002(\001\033[1;36m\002${venv}\001\033[1;34m\002) "
   fi
 }
 
 function parseMambaEnv() {
   if [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
-    echo -e "\001\033[1;34m\002(\001\033[1;36m\002${CONDA_DEFAULT_ENV}\001\033[1;34m\002) "
+    printf "\001\033[1;34m\002(\001\033[1;36m\002${CONDA_DEFAULT_ENV}\001\033[1;34m\002) "
   fi
 }
 
