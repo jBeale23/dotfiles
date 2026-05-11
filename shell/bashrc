@@ -146,13 +146,13 @@ PROMPT_DIRTRIM=2
 
 function parseVenv() {
   if [[ -n "${venv}" ]]; then
-    printf "\001\033[1;34m\002(\001\033[1;36m\002${venv}\001\033[1;34m\002) "
+    printf "\001\033[1;34m\002(\001\033[1;36m\002%s\001\033[1;34m\002) " "${venv}"
   fi
 }
 
 function parseMambaEnv() {
   if [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
-    printf "\001\033[1;34m\002(\001\033[1;36m\002${CONDA_DEFAULT_ENV}\001\033[1;34m\002) "
+    printf "\001\033[1;34m\002(\001\033[1;36m\002%s\001\033[1;34m\002) " "${CONDA_DEFAULT_ENV}"
   fi
 }
 
