@@ -145,7 +145,6 @@ bind -m vi-insert 'Control-l: clear-screen'
 PROMPT_DIRTRIM=2
 
 _blue_bold='\001\033[1;34m\002'
-_gray_bold='\001\033[1;90m\002'
 _green_bold='\001\033[1;32m\002'
 _cyan_bold='\001\033[1;36m\002'
 _red_bold='\001\033[1;31m\002'
@@ -155,13 +154,15 @@ _reset='\001\033[0m\002'
 
 function returnCode() {
   status="${?}"
-  columns=$(($(tput cols) + 27))
-  status_string=$(printf "%b(%b%s%b)" "${_blue_bold}" "${_cyan_bold}" "${status}" "${_blue_bold}")
+  local columns
+  columns=$(($(tput cols) + 36))
+  local status_string
+  status_string=$(printf "%b(%bPrevious Return: %b%s%b)" "${_blue_bold}" "${_white_bold}" "${_cyan_bold}" "${status}" "${_blue_bold}")
   printf "%*s\r" "${columns}" "${status_string}"
 }
 
 function timestamp() {
-  printf "%b[%b%(%H:%M:%S)T%b] " "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}"
+  printf "%b[%b%(%H)T%b:%b%(%M)T%b:%b%(%S)T%b] " "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}"
 }
 
 function parseVenv() {
@@ -177,6 +178,7 @@ function parseMambaEnv() {
 }
 
 function parseUser() {
+  local prompt_color
   if [[ "${EUID}" -eq 0 ]]; then
     prompt_color="${_red_bold}"
   else
@@ -187,12 +189,22 @@ function parseUser() {
 
 function parseHost() {
   if [[ -n "${SSH_CONNECTION}" ]]; then
-    printf " %b[%bssh%b] %b@ %b%s" "${_gray_bold}" "${_cyan_bold}" "${_gray_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
+    printf " %b[%bssh%b] %b%s" "${_blue_bold}" "${_cyan_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
   fi
 }
 
-bind "set vi-ins-mode-string ${_gray_bold}[${_green_bold}INSERT${_gray_bold}]"
-bind "set vi-cmd-mode-string ${_gray_bold}[${_yellow_bold}COMMAND${_gray_bold}]"
+function parseGitBranch() {
+  local branch
+  if branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); then
+    printf "%b(%b%s%b)%b " "${_blue_bold}" "${_reset}" "${branch}" "${_blue_bold}" "${_reset}"
+  fi
+}
+
+trap 'printf "\033]0;%s\033\\" "${BASH_COMMAND}"' DEBUG
+PROMPT_COMMAND='printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"'
+
+bind "set vi-ins-mode-string ${_green_bold}INSERT"
+bind "set vi-cmd-mode-string ${_yellow_bold}COMMAND"
 PS1="\$(returnCode)"
 PS1+="\$(timestamp)"
 PS1+="\$(parseVenv)"
@@ -200,6 +212,7 @@ PS1+="\$(parseMambaEnv)"
 PS1+="\$(parseUser)"
 PS1+="\$(parseHost)"
 PS1+="\n ${_white_bold}\w${_reset} "
+PS1+="\$(parseGitBranch)"
 
 PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
 
