@@ -1,4 +1,85 @@
 # shellcheck shell=bash
+# --------- #
+# ENV Setup #
+# --------- #
+
+# ----------------- #
+# XDG Configuration #
+# ----------------- #
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+export XDG_DOCUMENTS_DIR="${HOME}/Documents"
+
+# -------------------- #
+# Editor Configuration #
+# -------------------- #
+if nvim --version >/dev/null 2>&1; then
+  export EDITOR="nvim"
+elif vim --version >/dev/null 2>&1; then
+  export EDITOR="vim"
+elif vi --version >/dev/null 2>&1; then
+  export EDITOR="vi"
+elif nano --version >/dev/null 2>&1; then
+  export EDITOR="nano"
+else
+  echo "WARNING: EDITOR could not be set." >&2
+fi
+if [[ -n "${EDITOR}" ]]; then
+  export VISUAL="${EDITOR}"
+fi
+
+# --------------------- #
+# History Configuration #
+# --------------------- #
+export HISTCONTROL=ignoreboth # Ignore empty & duplicate content
+export HISTSIZE=1000
+export HISTFILESIZE=${HISTSIZE}
+export HISTTIMEFORMAT="[%Y-%m-%d %T] " # Change date format to YYYY-mm-dd
+export HISTIGNORE="&:ls:ll:la:l:lt:pwd:exit:\:e\:q:history:grep"
+
+# ------------------- #
+# Misc Configurations #
+# ------------------- #
+export LANG="en_US.UTF-8"
+export TMPDIR="/tmp"
+
+# ----------------------------- #
+# Python Environment Management #
+# ----------------------------- #
+export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
+export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
+if [[ -f "${MAMBA_EXE}" ]]; then
+  if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
+    eval "${__mamba_setup}"
+  else
+    alias mamba='${MAMBA_EXE}'
+  fi
+  unset __mamba_setup
+fi
+
+export PYENV_ROOT="${HOME}/.src/pyenv"
+[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:$PATH" && eval "$(pyenv init - bash)"
+
+# --------------------------------- #
+# User-Made Executables and Scripts #
+# --------------------------------- #
+declare -a user_executable_paths
+user_executable_paths=("${HOME}/bin" "${HOME}/.bin" "${HOME}/.local/bin")
+for path in "${user_executable_paths[@]}"; do
+  [[ -d "${path}" ]] && export PATH="${path}:${PATH}"
+done
+
+# --------------------------------------- #
+# Export a Singleton Repository Directory #
+# --------------------------------------- #
+declare -a repository_directories
+repository_directories=("${HOME}/repositories" "${XDG_DOCUMENTS_DIR}/repositories")
+for path in "${repository_directories[@]}"; do
+  [[ -d "${path}" ]] && export REPOSITORY_DIR="${path}" && break
+done
+
 # -------------------- #
 # Noninteractive Guard #
 # -------------------- #
@@ -65,93 +146,11 @@ PS1='\001\033[1;34m\002[\001\033[1;37m\002\t\001\033[1;34m\002] $(parseVenv)$(pa
 
 PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
 
-# --------- #
-# ENV Setup #
-# --------- #
-export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_STATE_HOME="${HOME}/.local/state"
-export XDG_DOCUMENTS_DIR="${HOME}/Documents"
-
-export TMPDIR="/tmp"
-
-if nvim --version >/dev/null 2>&1; then
-  export EDITOR="nvim"
-elif vim --version >/dev/null 2>&1; then
-  export EDITOR="vim"
-elif vi --version >/dev/null 2>&1; then
-  export EDITOR="vi"
-elif nano --version >/dev/null 2>&1; then
-  export EDITOR="nano"
-else
-  echo "WARNING: EDITOR could not be set." >&2
-fi
-if [[ -n "${EDITOR}" ]]; then
-  export VISUAL="${EDITOR}"
-fi
-
-export LANG="en_US.UTF-8"
-
-# Exports a singleton repository directory, using my common paths
-declare -a repository_directories
-repository_directories=("${HOME}/repositories" "${XDG_DOCUMENTS_DIR}/repositories")
-for path in "${repository_directories[@]}"; do
-  [[ -d "${path}" ]] && export REPOSITORY_DIR="${path}" && break
-done
-
-export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
-export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
-
-# ------------------ #
-# Navigation Helpers #
-# ------------------ #
-if [[ -f "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh" ]]; then
-  . "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh"
-fi
-
 # ------- #
 # Aliases #
 # ------- #
 if [[ -e "${HOME}"/.bash_aliases ]]; then
   . "${HOME}/.bash_aliases" 2>/dev/null
 fi
-
-# ----- #
-# Mamba #
-# ----- #
-if [[ -f "${MAMBA_EXE}" ]]; then
-  if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
-    eval "${__mamba_setup}"
-  else
-    alias mamba='${MAMBA_EXE}'
-  fi
-  unset __mamba_setup
-fi
-
-# ----- #
-# Pyenv #
-# ----- #
-export PYENV_ROOT="${HOME}/.src/pyenv"
-[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:$PATH" && eval "$(pyenv init - bash)"
-
-# --------------------------------- #
-# User-Made Executables and Scripts #
-# --------------------------------- #
-# Extends $PATH with all of my common places for self-made executables
-declare -a user_executable_paths
-user_executable_paths=("${HOME}/bin" "${HOME}/.bin" "${HOME}/.local/bin")
-for path in "${user_executable_paths[@]}"; do
-  [[ -d "${path}" ]] && export PATH="${path}:${PATH}"
-done
-
-# --------------------- #
-# History Configuration #
-# --------------------- #
-export HISTCONTROL=ignoreboth # Ignore empty & duplicate content
-export HISTSIZE=1000
-export HISTFILESIZE=${HISTSIZE}
-export HISTTIMEFORMAT="[%Y-%m-%d %T] " # Change date format to YYYY-mm-dd
-export HISTIGNORE="&:ls:ll:la:l:lt:pwd:exit:\:e\:q:history:grep"
 
 # vim: set filetype=bash:
