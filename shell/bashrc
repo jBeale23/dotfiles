@@ -45,6 +45,18 @@ export HISTIGNORE="&:ls:ll:la:l:lt:pwd:exit:\:e\:q:history:grep"
 export LANG="en_US.UTF-8"
 export TMPDIR="/tmp"
 
+# ------------------------- #
+# Safe Path Insert Function #
+# ------------------------- #
+function _path_insert() {
+  case ":${PATH:=${1}}:" in
+  *:"${1}":*) ;;
+  *)
+    export PATH="${1}:${PATH}"
+    ;;
+  esac
+}
+
 # ----------------------------- #
 # Python Environment Management #
 # ----------------------------- #
@@ -60,7 +72,7 @@ if [[ -f "${MAMBA_EXE}" ]]; then
 fi
 
 export PYENV_ROOT="${HOME}/.src/pyenv"
-[[ -d ${PYENV_ROOT}/bin ]] && export PATH="${PYENV_ROOT}/bin:$PATH" && eval "$(pyenv init - bash)"
+[[ -d ${PYENV_ROOT}/bin ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
 
 # --------------------------------- #
 # User-Made Executables and Scripts #
@@ -68,7 +80,7 @@ export PYENV_ROOT="${HOME}/.src/pyenv"
 declare -a user_executable_paths
 user_executable_paths=("${HOME}/bin" "${HOME}/.bin" "${HOME}/.local/bin")
 for path in "${user_executable_paths[@]}"; do
-  [[ -d "${path}" ]] && export PATH="${path}:${PATH}"
+  [[ -d "${path}" ]] && _path_insert "${path}"
 done
 
 # --------------------------------------- #
@@ -79,6 +91,8 @@ repository_directories=("${HOME}/repositories" "${XDG_DOCUMENTS_DIR}/repositorie
 for path in "${repository_directories[@]}"; do
   [[ -d "${path}" ]] && export REPOSITORY_DIR="${path}" && break
 done
+
+unset -f _path_insert
 
 # -------------------- #
 # Noninteractive Guard #
