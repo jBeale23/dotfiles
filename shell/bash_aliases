@@ -120,6 +120,7 @@ alias :e='${VISUAL}'
 alias vim='${VISUAL}'
 alias vi='${VISUAL}'
 if [[ -f "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh" ]]; then
+  . "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh"
   alias cd='de'
 fi
 
