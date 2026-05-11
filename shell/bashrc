@@ -60,8 +60,8 @@ function _path_insert() {
 # ----------------------------- #
 # Python Environment Management #
 # ----------------------------- #
-export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
-export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
+[[ -f "${HOME}/.src/miniforge3/bin/mamba" ]] && export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
+[[ -d "${HOME}/.src/miniforge3" ]] && export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
 if [[ -f "${MAMBA_EXE}" ]]; then
   if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
     eval "${__mamba_setup}"
@@ -71,8 +71,8 @@ if [[ -f "${MAMBA_EXE}" ]]; then
   unset __mamba_setup
 fi
 
-export PYENV_ROOT="${HOME}/.src/pyenv"
-[[ -d ${PYENV_ROOT}/bin ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
+[[ -d "${HOME}/.src/pyenv" ]] && export PYENV_ROOT="${HOME}/.src/pyenv"
+[[ -d "${PYENV_ROOT}/bin" ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
 
 # --------------------------------- #
 # User-Made Executables and Scripts #
