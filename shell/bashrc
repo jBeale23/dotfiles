@@ -71,8 +71,10 @@ if [[ -f "${MAMBA_EXE}" ]]; then
   unset __mamba_setup
 fi
 
-[[ -d "${HOME}/.src/pyenv" ]] && export PYENV_ROOT="${HOME}/.src/pyenv"
-[[ -d "${PYENV_ROOT}/bin" ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
+if [[ -d "${HOME}/.src/pyenv" ]]; then
+  export PYENV_ROOT="${HOME}/.src/pyenv"
+  [[ -d "${PYENV_ROOT}/bin" ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
+fi
 
 # --------------------------------- #
 # User-Made Executables and Scripts #
@@ -143,7 +145,6 @@ bind -m vi-insert 'Control-l: clear-screen'
 PROMPT_DIRTRIM=2
 
 _blue_bold='\001\033[1;34m\002'
-_bright_cyan_bold='\001\033[1;96m\002'
 _gray_bold='\001\033[1;90m\002'
 _green_bold='\001\033[1;32m\002'
 _cyan_bold='\001\033[1;36m\002'
@@ -186,7 +187,7 @@ function parseUser() {
 
 function parseHost() {
   if [[ -n "${SSH_CONNECTION}" ]]; then
-    printf " %b[%bssh%b] %b@ %b%s" "${_gray_bold}" "${_bright_cyan_bold}" "${_gray_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
+    printf " %b[%bssh%b] %b@ %b%s" "${_gray_bold}" "${_cyan_bold}" "${_gray_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
   fi
 }
 
