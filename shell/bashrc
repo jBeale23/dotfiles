@@ -80,15 +80,17 @@ function _path_insert() {
 # ----------------------------- #
 # Python Environment Management #
 # ----------------------------- #
-[[ -f "${HOME}/.src/miniforge3/bin/mamba" ]] && export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
-[[ -d "${HOME}/.src/miniforge3" ]] && export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
-if [[ -f "${MAMBA_EXE}" ]]; then
-  if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
-    eval "${__mamba_setup}"
-  else
-    alias mamba='${MAMBA_EXE}'
+if [[ -d "${HOME}/.src/miniforge3" ]]; then
+  export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
+  if [[ -f "${MAMBA_ROOT_PREFIX}/bin/mamba" ]]; then
+    export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
+    if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
+      eval "${__mamba_setup}"
+    else
+      alias mamba='${MAMBA_EXE}'
+    fi
+    unset __mamba_setup
   fi
-  unset __mamba_setup
 fi
 
 if [[ -d "${HOME}/.src/pyenv" ]]; then
