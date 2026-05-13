@@ -45,6 +45,7 @@ alias ga='git add'                      # [G]it [A]dd
 alias gaa='git add --all'               # [G]it [A]dd [A]ll
 alias gc='git commit'                   # [G]it [C]ommit
 alias gca='git commit --all'            # [G]it [C]ommit [A]ll
+alias gcam='git commit --all --message' # [G]it [C]ommit [A]ll [M]essage
 alias gcm='git commit --message'        # [G]it [C]ommit [M]essage
 alias gs='git status'                   # [G]it [S]tatus
 alias gd='git diff ':!*lock''           # [G]it [D]iff
