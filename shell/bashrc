@@ -161,9 +161,9 @@ bind "set editing-mode vi"
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
-# ----------- #
-# PS1 and PS4 #
-# ----------- #
+# -------------------- #
+# Prompt Configuration #
+# -------------------- #
 PROMPT_DIRTRIM=2
 
 _blue_bold=$'\001\033[1;34m\002'
@@ -225,8 +225,8 @@ function parseGitBranch() {
 trap 'printf "\033]0;%s\033\\" "${BASH_COMMAND}"' DEBUG
 PROMPT_COMMAND='printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"'
 
-bind "set vi-ins-mode-string ${_green_bold}INSERT"
-bind "set vi-cmd-mode-string ${_yellow_bold}COMMAND"
+bind "set vi-ins-mode-string ${_green_bold}INSERT${_reset}"
+bind "set vi-cmd-mode-string ${_yellow_bold}COMMAND${_reset}"
 PS1="\$(returnCode)"
 PS1+="\$(timestamp)"
 PS1+="\$(parseVenv)"
