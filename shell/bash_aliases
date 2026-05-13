@@ -87,10 +87,10 @@ function gbd() {
 }
 
 # ----------------------------------------- #
-#          [G]it [C]heckout [M]ain          #
+#         [G]it [C]heck[o]ut [M]ain         #
 # Checkout the main branch and pull changes #
 # ----------------------------------------- #
-function gcm() {
+function gcom() {
   local main
   main=$(gmb) || return "${?}"
   git checkout "${main}" && git pull
