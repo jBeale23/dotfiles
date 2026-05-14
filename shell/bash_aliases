@@ -53,6 +53,9 @@ alias gdc='git diff --cached ':!*lock'' # [G]it [D]iff [C]ached
 alias gdf='git diff'                    # [G]it [D]iff [F]ull
 alias gdfc='git diff --cached '         # [G]it [D]iff [F]ull [C]ached
 alias gco='git checkout'                # [G]it [C]heck[o]ut
+alias gp='git push'                     # [G]it [P]ush
+alias gl='git pull'                     # [G]it [P]ull
+alias gpr='gh pr create'                # [G]itHub [P]ull [R]equest
 
 # ------------------------------- #
 #      [G]it [M]ain [B]ranch      #
