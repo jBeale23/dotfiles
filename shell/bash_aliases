@@ -7,9 +7,9 @@
 # Ls aliases #
 # ---------- #
 if ls --color=auto &>/dev/null; then
-  alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M" --color=auto'
+	alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M" --color=auto'
 else
-  alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M"'
+	alias ls='ls --group-directories-first --time-style=+"%Y.%m.%d %H:%M"'
 fi
 alias ll='ls --almost-all -l --classify --human-readable'
 alias la='ls --almost-all'
@@ -20,9 +20,9 @@ alias lt='ls --human-readable --size -1 -S --classify'
 # Grep aliases #
 # ------------ #
 if printf "test" | grep --color=auto "test" &>/dev/null; then
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
 fi
 alias hgrep='history | grep'
 
@@ -35,7 +35,7 @@ alias ....='cd../../../'
 alias ~='cd ~'
 
 function -() {
-  cd - || return ${?}
+	cd - || return ${?}
 }
 
 # ----------- #
@@ -55,19 +55,18 @@ alias gdfc='git diff --cached '         # [G]it [D]iff [F]ull [C]ached
 alias gco='git checkout'                # [G]it [C]heck[o]ut
 alias gp='git push'                     # [G]it [P]ush
 alias gl='git pull'                     # [G]it [P]ull
-alias ghpr='gh pr create'               # [G]it[H]ub [P]ull [R]equest
 
 # ------------------------------- #
 #      [G]it [M]ain [B]ranch      #
 # Get the name of the main branch #
 # ------------------------------- #
 function gmb() {
-  local main
-  main=$(git symbolic-ref --short refs/remotes/origin/HEAD)
-  status="${?}"
-  main=${main#origin/}
-  [[ -n ${main} ]] || return "${status}"
-  printf "%s\n" "${main}"
+	local main
+	main=$(git symbolic-ref --short refs/remotes/origin/HEAD)
+	status="${?}"
+	main=${main#origin/}
+	[[ -n ${main} ]] || return "${status}"
+	printf "%s\n" "${main}"
 }
 
 # -------------------------------------------------------------------------- #
@@ -75,9 +74,9 @@ function gmb() {
 # Create a new branch, using $USER-Year-Month-Day if no template is provided #
 # -------------------------------------------------------------------------- #
 function gnb() {
-  local branchname
-  branchname="${1:-$(printf "%s-%(%Y-%m-%d)T" "${USER}" -1)}"
-  git checkout -b "${branchname}"
+	local branchname
+	branchname="${1:-$(printf "%s-%(%Y-%m-%d)T" "${USER}" -1)}"
+	git checkout -b "${branchname}"
 }
 
 # --------------------------------------------------------- #
@@ -85,9 +84,9 @@ function gnb() {
 # Compare the current branch to the HEAD of the main branch #
 # --------------------------------------------------------- #
 function gbd() {
-  local main
-  main=$(gmb) || return "${?}"
-  git diff "${main}..HEAD" "${@}"
+	local main
+	main=$(gmb) || return "${?}"
+	git diff "${main}..HEAD" "${@}"
 }
 
 # ----------------------------------------- #
@@ -95,9 +94,9 @@ function gbd() {
 # Checkout the main branch and pull changes #
 # ----------------------------------------- #
 function gcom() {
-  local main
-  main=$(gmb) || return "${?}"
-  git checkout "${main}" && git pull
+	local main
+	main=$(gmb) || return "${?}"
+	git checkout "${main}" && git pull
 }
 
 # ------------------------------------------- #
@@ -105,9 +104,9 @@ function gcom() {
 # Merge the main branch to the current branch #
 # ------------------------------------------- #
 function gmm() {
-  local main
-  main=$(gmb) || return "${?}"
-  git merge "${main}"
+	local main
+	main=$(gmb) || return "${?}"
+	git merge "${main}"
 }
 
 # ------------------------------------- #
@@ -115,8 +114,8 @@ function gmm() {
 # Clone a git repository and CD into it #
 # ------------------------------------- #
 function grc() {
-  git clone "${1}" || return "${?}"
-  cd "$(basename "${1}" .git)" || return "${?}"
+	git clone "${1}" || return "${?}"
+	cd "$(basename "${1}" .git)" || return "${?}"
 }
 
 # ----------------- #
@@ -131,22 +130,22 @@ alias :e='${VISUAL}'
 alias vim='${VISUAL}'
 alias vi='${VISUAL}'
 if [[ -f "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh" ]]; then
-  . "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh"
-  alias cd='de'
+	. "${REPOSITORY_DIR}/directory-explorer/directory-explorer.sh"
+	alias cd='de'
 fi
 
 # ---------------- #
 # Shell Cheatsheet #
 # ---------------- #
 function cs() {
-  curl -s "https://cht.sh/${1}?qT&style=bw"
+	curl -s "https://cht.sh/${1}?qT&style=bw"
 }
 
 # ----------- #
 # Easier Open #
 # ----------- #
 if xdg-open --version &>/dev/null; then
-  alias open='xdg-open'
+	alias open='xdg-open'
 fi
 
 # ----------- #

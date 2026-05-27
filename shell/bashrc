@@ -16,18 +16,18 @@ export XDG_DOCUMENTS_DIR="${HOME}/Documents"
 # Editor Configuration #
 # -------------------- #
 if nvim --version >/dev/null 2>&1; then
-  export EDITOR="nvim"
+	export EDITOR="nvim"
 elif vim --version >/dev/null 2>&1; then
-  export EDITOR="vim"
+	export EDITOR="vim"
 elif vi --version >/dev/null 2>&1; then
-  export EDITOR="vi"
+	export EDITOR="vi"
 elif nano --version >/dev/null 2>&1; then
-  export EDITOR="nano"
+	export EDITOR="nano"
 else
-  printf "WARNING: EDITOR could not be set.\n" >&2
+	printf "WARNING: EDITOR could not be set.\n" >&2
 fi
 if [[ -n "${EDITOR}" ]]; then
-  export VISUAL="${EDITOR}"
+	export VISUAL="${EDITOR}"
 fi
 
 # --------------------- #
@@ -69,33 +69,33 @@ export TMPDIR="/tmp"
 # Safe Path Insert Function #
 # ------------------------- #
 function _path_insert() {
-  case ":${PATH:=${1}}:" in
-  *:"${1}":*) ;;
-  *)
-    export PATH="${1}:${PATH}"
-    ;;
-  esac
+	case ":${PATH:=${1}}:" in
+	*:"${1}":*) ;;
+	*)
+		export PATH="${1}:${PATH}"
+		;;
+	esac
 }
 
 # ----------------------------- #
 # Python Environment Management #
 # ----------------------------- #
 if [[ -d "${HOME}/.src/miniforge3" ]]; then
-  export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
-  if [[ -f "${MAMBA_ROOT_PREFIX}/bin/mamba" ]]; then
-    export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
-    if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
-      eval "${__mamba_setup}"
-    else
-      alias mamba='${MAMBA_EXE}'
-    fi
-    unset __mamba_setup
-  fi
+	export MAMBA_ROOT_PREFIX="${HOME}/.src/miniforge3"
+	if [[ -f "${MAMBA_ROOT_PREFIX}/bin/mamba" ]]; then
+		export MAMBA_EXE="${HOME}/.src/miniforge3/bin/mamba"
+		if __mamba_setup="$("${MAMBA_EXE}" shell hook --shell bash --root-prefix "${MAMBA_ROOT_PREFIX}" 2>/dev/null)"; then
+			eval "${__mamba_setup}"
+		else
+			alias mamba='${MAMBA_EXE}'
+		fi
+		unset __mamba_setup
+	fi
 fi
 
 if [[ -d "${HOME}/.src/pyenv" ]]; then
-  export PYENV_ROOT="${HOME}/.src/pyenv"
-  [[ -d "${PYENV_ROOT}/bin" ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
+	export PYENV_ROOT="${HOME}/.src/pyenv"
+	[[ -d "${PYENV_ROOT}/bin" ]] && _path_insert "${PYENV_ROOT}/bin" && eval "$(pyenv init - bash)"
 fi
 
 # --------------------------------- #
@@ -104,7 +104,7 @@ fi
 declare -a user_executable_paths
 user_executable_paths=("${HOME}/bin" "${HOME}/.bin" "${HOME}/.local/bin")
 for path in "${user_executable_paths[@]}"; do
-  [[ -d "${path}" ]] && _path_insert "${path}"
+	[[ -d "${path}" ]] && _path_insert "${path}"
 done
 
 # --------------------------------------- #
@@ -113,7 +113,7 @@ done
 declare -a repository_directories
 repository_directories=("${HOME}/repositories" "${XDG_DOCUMENTS_DIR}/repositories")
 for path in "${repository_directories[@]}"; do
-  [[ -d "${path}" ]] && export REPOSITORY_DIR="${path}" && break
+	[[ -d "${path}" ]] && export REPOSITORY_DIR="${path}" && break
 done
 
 unset -f _path_insert
@@ -143,9 +143,9 @@ shopt -s hostcomplete   # Attempts hostname completion when @ is present in a st
 # Completions #
 # ----------- #
 if [[ -f /etc/bash_completion ]]; then
-  . /etc/bash_completion 2>/dev/null
+	. /etc/bash_completion 2>/dev/null
 elif [[ -f ~/.bash_completion ]]; then
-  . ~/.bash_completion 2>/dev/null
+	. ~/.bash_completion 2>/dev/null
 fi
 
 # ----------------- #
@@ -175,51 +175,51 @@ _yellow_bold=$'\001\033[1;33m\002'
 _reset=$'\001\033[0m\002'
 
 function returnCode() {
-  status="${?}"
-  local columns
-  columns=$(($(tput cols) + 36))
-  local status_string
-  status_string=$(printf "%s(%sPrevious Return: %s%s%s)" "${_blue_bold}" "${_white_bold}" "${_cyan_bold}" "${status}" "${_blue_bold}")
-  printf "%*s\r" "${columns}" "${status_string}"
+	status="${?}"
+	local columns
+	columns=$(($(tput cols) + 36))
+	local status_string
+	status_string=$(printf "%s(%sPrevious Return: %s%s%s)" "${_blue_bold}" "${_white_bold}" "${_cyan_bold}" "${status}" "${_blue_bold}")
+	printf "%*s\r" "${columns}" "${status_string}"
 }
 
 function timestamp() {
-  printf "%s[%s%(%H)T%s:%s%(%M)T%s:%s%(%S)T%s] " "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}"
+	printf "%s[%s%(%H)T%s:%s%(%M)T%s:%s%(%S)T%s] " "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}"
 }
 
 function parseVenv() {
-  if [[ -n "${venv}" ]]; then
-    printf "%s(%s%s%s) " "${_blue_bold}" "${_cyan_bold}" "${venv}" "${_blue_bold}"
-  fi
+	if [[ -n "${venv}" ]]; then
+		printf "%s(%s%s%s) " "${_blue_bold}" "${_cyan_bold}" "${venv}" "${_blue_bold}"
+	fi
 }
 
 function parseMambaEnv() {
-  if [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
-    printf "%s(%s%s%s) " "${_blue_bold}" "${_cyan_bold}" "${CONDA_DEFAULT_ENV}" "${_blue_bold}"
-  fi
+	if [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
+		printf "%s(%s%s%s) " "${_blue_bold}" "${_cyan_bold}" "${CONDA_DEFAULT_ENV}" "${_blue_bold}"
+	fi
 }
 
 function parseUser() {
-  local prompt_color
-  if [[ "${EUID}" -eq 0 ]]; then
-    prompt_color="${_red_bold}"
-  else
-    prompt_color="${_reset}"
-  fi
-  printf "%s%s" "${prompt_color}" "${USER}"
+	local prompt_color
+	if [[ "${EUID}" -eq 0 ]]; then
+		prompt_color="${_red_bold}"
+	else
+		prompt_color="${_reset}"
+	fi
+	printf "%s%s" "${prompt_color}" "${USER}"
 }
 
 function parseHost() {
-  if [[ -n "${SSH_CONNECTION}" ]]; then
-    printf " %s[%sssh%s] %s%s" "${_blue_bold}" "${_cyan_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
-  fi
+	if [[ -n "${SSH_CONNECTION}" ]]; then
+		printf " %s[%sssh%s] %s%s" "${_blue_bold}" "${_cyan_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
+	fi
 }
 
 function parseGitBranch() {
-  local branch
-  if branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); then
-    printf "%s(%s%s%s)%s " "${_blue_bold}" "${_reset}" "${branch}" "${_blue_bold}" "${_reset}"
-  fi
+	local branch
+	if branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); then
+		printf "%s(%s%s%s)%s " "${_blue_bold}" "${_reset}" "${branch}" "${_blue_bold}" "${_reset}"
+	fi
 }
 
 trap 'printf "\033]0;%s\033\\" "${BASH_COMMAND}"' DEBUG
@@ -243,7 +243,7 @@ export PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
 # Aliases #
 # ------- #
 if [[ -e "${HOME}"/.bash_aliases ]]; then
-  . "${HOME}/.bash_aliases" 2>/dev/null
+	. "${HOME}/.bash_aliases" 2>/dev/null
 fi
 
 # vim: set filetype=bash:
