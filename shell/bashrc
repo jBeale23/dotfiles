@@ -222,8 +222,14 @@ function parseGitBranch() {
 	fi
 }
 
-trap 'printf "\033]0;%s\033\\" "${BASH_COMMAND}"' DEBUG
-PROMPT_COMMAND='printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"'
+function trapCommand() {
+	if [[ -n "${AT_PROMPT}" ]]; then
+		return
+	fi
+	printf "\033]0;%s\033\\" "${BASH_COMMAND}"
+	"${REPOSITORY_DIR}/cmd-log/cmd-log" --database="${HOME}/.cmd-log.db" -- "${BASH_COMMAND}"
+}
+PROMPT_COMMAND='AT_PROMPT=1; printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"; unset AT_PROMPT'
 
 bind "set vi-ins-mode-string ${_green_bold}INSERT${_reset}"
 bind "set vi-cmd-mode-string ${_yellow_bold}COMMAND${_reset}"
@@ -246,4 +252,5 @@ if [[ -e "${HOME}"/.bash_aliases ]]; then
 	. "${HOME}/.bash_aliases" 2>/dev/null
 fi
 
+trap trapCommand DEBUG
 # vim: set filetype=bash:
