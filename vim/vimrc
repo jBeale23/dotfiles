@@ -7,12 +7,12 @@ set mouse=a                       " Enable mouse support in all modes
 set confirm                       " Confirm when trying to quit without saving
 set clipboard=unnamedplus         " Use system clipboard
 if has('persistent_undo')         " Enable per-file undo history
-    let target_path = expand('~/.vim/undo/')
-    if !isdirectory(target_path)
-        call mkdir(target_path, "p", 0700)
-    endif
-    let &undodir = target_path
-    set undofile
+	let target_path = expand('~/.vim/undo/')
+	if !isdirectory(target_path)
+		call mkdir(target_path, "p", 0700)
+	endif
+	let &undodir = target_path
+	set undofile
 endif
 filetype plugin indent on         " Enable filetype detection based behavior
 set backspace=indent,eol,start    " Backspace over lines/indents
@@ -24,6 +24,10 @@ set formatoptions+=j              " Delete comment character when joining lines
 set ttimeout                      " Make ESC more responsive
 set ttimeoutlen=100
 set updatetime=100                " Makes async functions more responsive
+augroup formatOnSave              " Autoformat on save
+	autocmd!
+	autocmd BufWritePre * normal! gg=G`` 
+augroup END
 
 " ---------- "
 " UI & THEME "
@@ -39,7 +43,7 @@ set linebreak               " ...but at word boundaries...
 set breakindent             " ...and while preserving indent
 syntax on                   " Enable syntax highlighting
 if (has("termguicolors"))
-  set termguicolors
+	set termguicolors
 endif
 set background=dark
 colorscheme gruvbox8
@@ -86,22 +90,22 @@ endif
 " --------------- "
 " Correctly highlight $() and other modern affordances in filetype=sh.
 if !exists('g:is_posix') && !exists('g:is_bash') && !exists('g:is_kornshell') && !exists('g:is_dash')
-  let g:is_posix = 1
+	let g:is_posix = 1
 endif
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
+	runtime! macros/matchit.vim
 endif
 
 " Load matchparen if it hasn't been already
 if !exists('g:loaded_matchparen') && findfile('plugin/matchparen.vim', &rtp) ==# ''
-  runtime! plugin/matchparen.vim
+	runtime! plugin/matchparen.vim
 endif
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
-  runtime ftplugin/man.vim
+	runtime ftplugin/man.vim
 endif
 
 " ----------------- "
@@ -109,88 +113,88 @@ endif
 " ----------------- "
 " Code modified from statox (https://github.com/statox/FYT.vim) under the MIT License
 if ( has('nvim') || version > 802 )
-let s:save_cpo = &cpo
-set cpo&vim
-"}}}
-" functions {{{
-function! s:DeleteTemporaryMatch(timerId)
-    while !empty(s:yankedTextMatches)
-        let match = remove(s:yankedTextMatches, 0)
-        let windowID = match[0]
-        let matchID = match[1]
+	let s:save_cpo = &cpo
+	set cpo&vim
+	"}}}
+	" functions {{{
+	function! s:DeleteTemporaryMatch(timerId)
+		while !empty(s:yankedTextMatches)
+			let match = remove(s:yankedTextMatches, 0)
+			let windowID = match[0]
+			let matchID = match[1]
 
-        try
-            call matchdelete(matchID, windowID)
-        catch
-            try
-                call matchdelete(matchID)
-            catch
-                " Yeah this is a terrible hack to handle older version of vim/neovim
-                " which don't take a windowID as argument of matchdelete
-            endtry
-        endtry
-    endwhile
-endfunction
+			try
+				call matchdelete(matchID, windowID)
+			catch
+				try
+					call matchdelete(matchID)
+				catch
+					" Yeah this is a terrible hack to handle older version of vim/neovim
+					" which don't take a windowID as argument of matchdelete
+				endtry
+			endtry
+		endwhile
+	endfunction
 
-" Used to clean up when leaving a window before the timer were executed
-function! DeleteMatchesInCurrentWindow()
-    if (!exists('s:yankedTextMatches'))
-        return
-    endif
+	" Used to clean up when leaving a window before the timer were executed
+	function! DeleteMatchesInCurrentWindow()
+		if (!exists('s:yankedTextMatches'))
+			return
+		endif
 
-    for matchToRemove in s:yankedTextMatches
-        if (matchToRemove[0] == winnr())
-            call matchdelete(matchToRemove[1])
-        endif
-    endfor
+		for matchToRemove in s:yankedTextMatches
+			if (matchToRemove[0] == winnr())
+				call matchdelete(matchToRemove[1])
+			endif
+		endfor
 
-    call filter(s:yankedTextMatches, 'v:val[1] == winnr()')
-endfunction
+		call filter(s:yankedTextMatches, 'v:val[1] == winnr()')
+	endfunction
 
-function! FlashYankedText(event)
-    " Don't highlight if the last command was not a yank
-    if (a:event.operator != 'y')
-        return
-    endif
+	function! FlashYankedText(event)
+		" Don't highlight if the last command was not a yank
+		if (a:event.operator != 'y')
+			return
+		endif
 
-    if (!exists('s:yankedTextMatches'))
-        let s:yankedTextMatches = []
-    endif
+		if (!exists('s:yankedTextMatches'))
+			let s:yankedTextMatches = []
+		endif
 
-    let window = winnr()
+		let window = winnr()
 
-    " Handle case of visual block using one match by line
-    if (len(a:event.regtype) > 0 && a:event.regtype[0] == "\<C-V>")
-        let lineStart = line("'<")
-        let lineStop = line("'>")
-        let columnStart = col("'<")
-        let columnStop = col("'>")
+		" Handle case of visual block using one match by line
+		if (len(a:event.regtype) > 0 && a:event.regtype[0] == "\<C-V>")
+			let lineStart = line("'<")
+			let lineStop = line("'>")
+			let columnStart = col("'<")
+			let columnStop = col("'>")
 
-        " For each line in the block selection create a pattern using the first and last column
-        " The pattern looks like this:
-        "   \%Xl\%Yc.*\%Zc
-        " Where X is the line, Y the first column and Z the last column
-        for line in range(lineStart, lineStop)
-            let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), "\\%" . line . "l\\%" . columnStart . "c.*\\%" . columnStop . "c")
-            call add(s:yankedTextMatches, [window, matchId])
-        endfor
-    elseif a:event.visual " Handle clipboard=autoselect, see https://github.com/statox/FYT.vim/issues/6
-        let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), ".\\%>'<\\_.*\\%<'>..")
-        call add(s:yankedTextMatches, [window, matchId])
-    else " Other visual types
-        let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), ".\\%>'\\[\\_.*\\%<']..")
-        call add(s:yankedTextMatches, [window, matchId])
-    endif
+			" For each line in the block selection create a pattern using the first and last column
+			" The pattern looks like this:
+			"   \%Xl\%Yc.*\%Zc
+			" Where X is the line, Y the first column and Z the last column
+			for line in range(lineStart, lineStop)
+				let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), "\\%" . line . "l\\%" . columnStart . "c.*\\%" . columnStop . "c")
+				call add(s:yankedTextMatches, [window, matchId])
+			endfor
+		elseif a:event.visual " Handle clipboard=autoselect, see https://github.com/statox/FYT.vim/issues/6
+			let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), ".\\%>'<\\_.*\\%<'>..")
+			call add(s:yankedTextMatches, [window, matchId])
+		else " Other visual types
+			let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), ".\\%>'\\[\\_.*\\%<']..")
+			call add(s:yankedTextMatches, [window, matchId])
+		endif
 
-    call timer_start(get(g:, 'FYT_flash_time', 200), function('<SID>DeleteTemporaryMatch'))
-endfunction
-" }}}
-augroup highlightYankedText
-    autocmd!
-    autocmd TextYankPost * call FlashYankedText(deepcopy(v:event))
-    autocmd WinLeave * call DeleteMatchesInCurrentWindow()
-augroup END
-" Reset {{{
-let &cpo = s:save_cpo
-unlet s:save_cpo
+		call timer_start(get(g:, 'FYT_flash_time', 200), function('<SID>DeleteTemporaryMatch'))
+	endfunction
+	" }}}
+	augroup highlightYankedText
+		autocmd!
+		autocmd TextYankPost * call FlashYankedText(deepcopy(v:event))
+		autocmd WinLeave * call DeleteMatchesInCurrentWindow()
+	augroup END
+	" Reset {{{
+	let &cpo = s:save_cpo
+	unlet s:save_cpo
 endif
