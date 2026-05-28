@@ -16,11 +16,3 @@ switch_case_indent = true
 space_redirects = true
 binary_next = true
 simplify = true
-
-# --- #
-# Lua #
-# --- #
-column_width = 160
-line_endings = "Unix"
-quote_style = "AutoPreferDouble"
-call_parentheses = "None"
