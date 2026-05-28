@@ -1,0 +1,196 @@
+set nocompatible            " Use Vim defaults instead of old Vi behavior
+
+" -------- "
+" BEHAVIOR "
+" -------- "
+set mouse=a                       " Enable mouse support in all modes
+set confirm                       " Confirm when trying to quit without saving
+set clipboard=unnamedplus         " Use system clipboard
+if has('persistent_undo')         " Enable per-file undo history
+    let target_path = expand('~/.vim/undo/')
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+    let &undodir = target_path
+    set undofile
+endif
+filetype plugin indent on         " Enable filetype detection based behavior
+set backspace=indent,eol,start    " Backspace over lines/indents
+set list                          " Show hidden characters
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+set splitbelow                    " Open new horizontal splits below
+set splitright                    " Open new vertical splits to the right
+set formatoptions+=j              " Delete comment character when joining lines
+set ttimeout                      " Make ESC more responsive
+set ttimeoutlen=100
+set updatetime=100                " Makes async functions more responsive
+
+" ---------- "
+" UI & THEME "
+" ---------- "
+set signcolumn=auto         " Display sign column when git signs are available
+set scrolloff=20            " Always keep at least 20 lines above and below cursor
+set showmode                " Show mode in modeline
+set ruler                   " Show cursor position in modeline
+set number                  " Show line numbers in the gutter
+set relativenumber          " Show relative line numbers for jumps
+set wrap                    " Wrap long lines...
+set linebreak               " ...but at word boundaries...
+set breakindent             " ...and while preserving indent
+syntax on                   " Enable syntax highlighting
+if (has("termguicolors"))
+  set termguicolors
+endif
+set background=dark
+colorscheme gruvbox8
+
+" ------ "
+" SEARCH "
+" ------ "
+set incsearch               " Highlight matches as you type
+set hlsearch                " Keep matches highlighted
+set ignorecase              " Case-insensitive search...
+set smartcase               " ...unless an uppercase letter is typed
+nnoremap <silent> <Esc> :nohlsearch<CR><Esc> " Clear highlighting when hitting escape
+
+" ----------- "
+" INDENTATION "
+" ----------- "
+set tabstop=4               " Insert 4 spaces for a tab
+set shiftwidth=4            " Indent width for auto-indent and >>
+set autoindent              " Copy indent from current line when starting a new one
+
+
+" ---------------- "
+" Completion Menus "
+" ---------------- "
+set complete-=i
+set completeopt=menuone,noinsert,noselect,preview
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+set showcmd                    " Show incomplete commands in bottom bar
+
+set wildmenu                   " Visual autocomplete for commands
+set wildoptions=pum,fuzzy      " Use popup menu style, and fuzzy matching for wildmenu
+set wildmode=list:longest,full " List all matches while completing the longest, then cycle
+if exists('*wildtrigger')
+	augroup cmdcomplete        " Automatically enable wildmenu for the command line while typing
+		au!
+		autocmd CmdlineChanged : call wildtrigger()
+	augroup END
+endif
+
+" --------------- "
+" Builtin Plugins "
+" --------------- "
+" Correctly highlight $() and other modern affordances in filetype=sh.
+if !exists('g:is_posix') && !exists('g:is_bash') && !exists('g:is_kornshell') && !exists('g:is_dash')
+  let g:is_posix = 1
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
+" Load matchparen if it hasn't been already
+if !exists('g:loaded_matchparen') && findfile('plugin/matchparen.vim', &rtp) ==# ''
+  runtime! plugin/matchparen.vim
+endif
+
+" Enable the :Man command shipped inside Vim's man filetype plugin.
+if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
+  runtime ftplugin/man.vim
+endif
+
+" ----------------- "
+" Highlight on Yank "
+" ----------------- "
+" Code modified from statox (https://github.com/statox/FYT.vim) under the MIT License
+if ( has('nvim') || version > 802 )
+let s:save_cpo = &cpo
+set cpo&vim
+"}}}
+" functions {{{
+function! s:DeleteTemporaryMatch(timerId)
+    while !empty(s:yankedTextMatches)
+        let match = remove(s:yankedTextMatches, 0)
+        let windowID = match[0]
+        let matchID = match[1]
+
+        try
+            call matchdelete(matchID, windowID)
+        catch
+            try
+                call matchdelete(matchID)
+            catch
+                " Yeah this is a terrible hack to handle older version of vim/neovim
+                " which don't take a windowID as argument of matchdelete
+            endtry
+        endtry
+    endwhile
+endfunction
+
+" Used to clean up when leaving a window before the timer were executed
+function! DeleteMatchesInCurrentWindow()
+    if (!exists('s:yankedTextMatches'))
+        return
+    endif
+
+    for matchToRemove in s:yankedTextMatches
+        if (matchToRemove[0] == winnr())
+            call matchdelete(matchToRemove[1])
+        endif
+    endfor
+
+    call filter(s:yankedTextMatches, 'v:val[1] == winnr()')
+endfunction
+
+function! FlashYankedText(event)
+    " Don't highlight if the last command was not a yank
+    if (a:event.operator != 'y')
+        return
+    endif
+
+    if (!exists('s:yankedTextMatches'))
+        let s:yankedTextMatches = []
+    endif
+
+    let window = winnr()
+
+    " Handle case of visual block using one match by line
+    if (len(a:event.regtype) > 0 && a:event.regtype[0] == "\<C-V>")
+        let lineStart = line("'<")
+        let lineStop = line("'>")
+        let columnStart = col("'<")
+        let columnStop = col("'>")
+
+        " For each line in the block selection create a pattern using the first and last column
+        " The pattern looks like this:
+        "   \%Xl\%Yc.*\%Zc
+        " Where X is the line, Y the first column and Z the last column
+        for line in range(lineStart, lineStop)
+            let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), "\\%" . line . "l\\%" . columnStart . "c.*\\%" . columnStop . "c")
+            call add(s:yankedTextMatches, [window, matchId])
+        endfor
+    elseif a:event.visual " Handle clipboard=autoselect, see https://github.com/statox/FYT.vim/issues/6
+        let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), ".\\%>'<\\_.*\\%<'>..")
+        call add(s:yankedTextMatches, [window, matchId])
+    else " Other visual types
+        let matchId = matchadd(get(g:, 'FYT_highlight_group', 'IncSearch'), ".\\%>'\\[\\_.*\\%<']..")
+        call add(s:yankedTextMatches, [window, matchId])
+    endif
+
+    call timer_start(get(g:, 'FYT_flash_time', 200), function('<SID>DeleteTemporaryMatch'))
+endfunction
+" }}}
+augroup highlightYankedText
+    autocmd!
+    autocmd TextYankPost * call FlashYankedText(deepcopy(v:event))
+    autocmd WinLeave * call DeleteMatchesInCurrentWindow()
+augroup END
+" Reset {{{
+let &cpo = s:save_cpo
+unlet s:save_cpo
+endif

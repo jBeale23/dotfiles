@@ -152,6 +152,6 @@ fi
 # Quick Edits #
 # ----------- #
 alias bashrc='${VISUAL} ~/.bashrc && source ~/.bashrc'
-alias vimrc='${VISUAL} ~/.config/nvim/init.lua'
+alias vimrc='${VISUAL} ~/.vimrc'
 
 # vim: set filetype=bash:

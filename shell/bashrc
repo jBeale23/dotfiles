@@ -15,9 +15,7 @@ export XDG_DOCUMENTS_DIR="${HOME}/Documents"
 # -------------------- #
 # Editor Configuration #
 # -------------------- #
-if nvim --version >/dev/null 2>&1; then
-	export EDITOR="nvim"
-elif vim --version >/dev/null 2>&1; then
+if vim --version >/dev/null 2>&1; then
 	export EDITOR="vim"
 elif vi --version >/dev/null 2>&1; then
 	export EDITOR="vi"
