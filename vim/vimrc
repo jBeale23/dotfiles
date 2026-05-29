@@ -14,7 +14,6 @@ if has('persistent_undo')         " Enable per-file undo history
 	let &undodir = target_path
 	set undofile
 endif
-filetype plugin indent on         " Enable filetype detection based behavior
 set backspace=indent,eol,start    " Backspace over lines/indents
 set list                          " Show hidden characters
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
@@ -64,7 +63,6 @@ set tabstop=4               " Insert 4 spaces for a tab
 set shiftwidth=4            " Indent width for auto-indent and >>
 set autoindent              " Copy indent from current line when starting a new one
 
-
 " ---------------- "
 " Completion Menus "
 " ---------------- "
@@ -74,7 +72,6 @@ inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 set showcmd                    " Show incomplete commands in bottom bar
-
 set wildmenu                   " Visual autocomplete for commands
 set wildoptions=pum,fuzzy      " Use popup menu style, and fuzzy matching for wildmenu
 set wildmode=list:longest,full " List all matches while completing the longest, then cycle
@@ -84,6 +81,15 @@ if exists('*wildtrigger')
 		autocmd CmdlineChanged : call wildtrigger()
 	augroup END
 endif
+
+" --------------- "
+" Per File Config "
+" --------------- "
+filetype plugin indent on         " Enable filetype detection based behavior
+augroup spellcheck
+	autocmd!
+	autocmd FileType markdown,text setlocal spell
+augroup END
 
 " --------------- "
 " Builtin Plugins "
