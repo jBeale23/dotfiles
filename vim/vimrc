@@ -23,9 +23,15 @@ set formatoptions+=j              " Delete comment character when joining lines
 set ttimeout                      " Make ESC more responsive
 set ttimeoutlen=100
 set updatetime=100                " Makes async functions more responsive
-augroup formatOnSave              " Autoformat on save
+function! AutoFormat()            " Autoformat on save
+	if exists('b:noAutoFormat')
+		return
+	endif
+	normal! gg=G``
+endfunction
+augroup formatOnSave
 	autocmd!
-	autocmd BufWritePre * normal! gg=G`` 
+	autocmd BufWritePre * call AutoFormat()
 augroup END
 
 " ---------- "
@@ -89,6 +95,11 @@ filetype plugin indent on         " Enable filetype detection based behavior
 augroup spellcheck
 	autocmd!
 	autocmd FileType markdown,text setlocal spell
+augroup END
+
+augroup yamlFix
+	autocmd!
+	autocmd FileType yaml let b:noAutoFormat=1
 augroup END
 
 " --------------- "
