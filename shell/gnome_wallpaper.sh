@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------------------------- #
 
 wallpaper_dir="${HOME}/.config/wallpapers"
-if [[ -d "${wallpaper_dir}" ]]; then
+if [[ -d ${wallpaper_dir} ]]; then
 	wallpaper=$(find "${wallpaper_dir}" -maxdepth 1 -type f -print0 \( -name "*.png" -o -name "*.jpg" \) | shuf -z -n 1 | tr '\0' '\n')
 	gsettings set org.gnome.desktop.background picture-uri-dark "file://${wallpaper}"
 	gsettings set org.gnome.desktop.screensaver picture-uri "file://${wallpaper}"

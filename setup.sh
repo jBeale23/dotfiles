@@ -51,7 +51,7 @@ fi
 # ---------------- #
 # Additional Tools #
 # ---------------- #
-if [[ "$HAS_GIT" -eq 0 && -d "$REPOSITORY_DIR" ]]; then
+if [[ $HAS_GIT -eq 0 && -d $REPOSITORY_DIR ]]; then
 	# ------------------ #
 	# Directory Explorer #
 	# ------------------ #
@@ -71,14 +71,14 @@ if command -v vim &> /dev/null; then
 	else
 		printf "WARNING: .vimrc already exists, not overwriting.\n" >&2
 	fi
-	if [[ "${HAS_GIT}" -eq 0 && ! -d "${HOME}/.vim/pack/airblade/start" ]]; then
+	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/airblade/start" ]]; then
 		mkdir -p "${HOME}/.vim/pack/airblade/start"
 		cd "${HOME}"/.vim/pack/airblade/start || exit 1
 		git clone https://github.com/airblade/vim-gitgutter.git
 		vim -u NONE -c "helptags vim-gitgutter/doc" -c q
 		cd "${WORKING_DIR}" || exit 1
 	fi
-	if [[ "${HAS_GIT}" -eq 0 && ! -d "${HOME}/.vim/pack/tpope/start" ]]; then
+	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/tpope/start" ]]; then
 		mkdir -p "${HOME}/.vim/pack/tpope/start"
 		cd "${HOME}/.vim/pack/tpope/start" || exit 1
 		git clone https://tpope.io/vim/fugitive.git
