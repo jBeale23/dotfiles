@@ -85,6 +85,13 @@ if command -v vim &> /dev/null; then
 		vim -u NONE -c "helptags fugitive/doc" -c q
 		cd "${WORKING_DIR}" || exit 1
 	fi
+	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/statox/start" ]]; then
+		mkdir -p "${HOME}/.vim/pack/statox/start"
+		cd "${HOME}/.vim/pack/statox/start" || exit 1
+		git clone https://github.com/statox/FYT.vim.git
+		vim -u NONE -c "helptags FYT/doc" -c q
+		cd "${WORKING_DIR}" || exit 1
+	fi
 	if command -v curl &> /dev/null && [[ ! -f "${HOME}/.vim/colors/gruvbox8.vim" ]]; then
 		cd "${HOME}/.vim/colors/" || exit 1
 		curl -O https://codeberg.org/lifepillar/vim-gruvbox8/raw/commit/ee054a75163bdfcbbc98c19a9e70ec4ff8af5aee/colors/gruvbox8.vim
