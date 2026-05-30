@@ -92,4 +92,13 @@ if command -v vim &> /dev/null; then
 	fi
 fi
 
+# --------- #
+# Alacritty #
+# --------- #
+if [[ ! -f "${HOME}/.config/alacritty/alacritty.toml" ]]; then
+	ln -s "${WORKING_DIR}/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
+else
+	printf "WARNING: alacritty.toml already exists, not overwriting.\n" >&2
+fi
+
 printf "Setup Complete. Please restart your shell or source ~/.bashrc for changes to take effect.\n"
