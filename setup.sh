@@ -115,4 +115,40 @@ else
 	printf "WARNING: alacritty.toml already exists, not overwriting.\n" >&2
 fi
 
+# ---- #
+# Sway #
+# ---- #
+if command -v sway &> /dev/null; then
+	if [[ ! -f "${HOME}/.config/sway/config" ]]; then
+		ln -s "${WORKING_DIR}/sway/config" "${HOME}/.config/sway/config"
+	else
+		printf "WARNING: sway config already exists, not overwriting.\n" >&2
+	fi
+fi
+
+# ------ #
+# Waybar #
+# ------ #
+if command -v waybar &> /dev/null; then
+	for file in "${WORKING_DIR}"/waybar/*; do
+		if [[ ! -f "${HOME}/.config/waybar/${file##*/}" ]]; then
+			ln -s "${file}" "${HOME}/.config/waybar"
+		else
+			printf "WARNING: waybar %s already exists, not overwriting.\n" "${file##*/}" >&2
+		fi
+	done
+fi
+
+# ---- #
+# Mako #
+# ---- #
+if command -v mako &> /dev/null; then
+	if [[ ! -f "${HOME}/.config/mako/config" ]]; then
+		ln -s "${WORKING_DIR}/mako/config" "${HOME}/.config/mako/config"
+	else
+		printf "WARNING: mako config already exists, not overwriting.\n" >&2
+	fi
+
+fi
+
 printf "Setup Complete. Please restart your shell or source ~/.bashrc for changes to take effect.\n"
