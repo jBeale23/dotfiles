@@ -2,7 +2,6 @@
 title = ""
 decorations = "Full"
 dimensions = {columns = 80, lines = 24}
-opacity = 0.85
 
 [window.padding]
 x = 10
