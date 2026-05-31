@@ -167,6 +167,8 @@ PROMPT_DIRTRIM=2
 _blue_bold=$'\001\033[1;34m\002'
 _green_bold=$'\001\033[1;32m\002'
 _cyan_bold=$'\001\033[1;36m\002'
+_magenta_bold=$'\001\033[1;35m\002'
+_orange_bold=$'\001\033[1;38;2;254;128;25m\002'
 _red_bold=$'\001\033[1;31m\002'
 _white_bold=$'\001\033[1;37m\002'
 _yellow_bold=$'\001\033[1;33m\002'
@@ -175,25 +177,25 @@ _reset=$'\001\033[0m\002'
 function returnCode() {
 	status="${?}"
 	local columns
-	columns=$(($(tput cols) + 36))
+	columns=$(($(tput cols) + 33))
 	local status_string
-	status_string=$(printf "%s(%sPrevious Return: %s%s%s)" "${_blue_bold}" "${_white_bold}" "${_cyan_bold}" "${status}" "${_blue_bold}")
+	status_string=$(printf "%s(%sPrevious Return: %s%s%s)" "${_cyan_bold}" "${_reset}" "${_magenta_bold}" "${status}" "${_cyan_bold}")
 	printf "%*s\r" "${columns}" "${status_string}"
 }
 
 function timestamp() {
-	printf "%s[%s%(%H)T%s:%s%(%M)T%s:%s%(%S)T%s] " "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}" "${_white_bold}" -1 "${_blue_bold}"
+	printf "%s[%s%(%H)T%s:%s%(%M)T%s:%s%(%S)T%s] " "${_orange_bold}" "${_magenta_bold}" -1 "${_reset}" "${_magenta_bold}" -1 "${_reset}" "${_magenta_bold}" -1 "${_orange_bold}"
 }
 
 function parseVenv() {
 	if [[ -n "${venv}" ]]; then
-		printf "%s(%s%s%s) " "${_blue_bold}" "${_cyan_bold}" "${venv}" "${_blue_bold}"
+		printf "%s(%s%s%s) " "${_cyan_bold}" "${_reset}" "${venv}" "${_cyan_bold}"
 	fi
 }
 
 function parseMambaEnv() {
 	if [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
-		printf "%s(%s%s%s) " "${_blue_bold}" "${_cyan_bold}" "${CONDA_DEFAULT_ENV}" "${_blue_bold}"
+		printf "%s(%s%s%s) " "${_cyan_bold}" "${_reset}" "${CONDA_DEFAULT_ENV}" "${_cyan_bold}"
 	fi
 }
 
@@ -209,14 +211,14 @@ function parseUser() {
 
 function parseHost() {
 	if [[ -n "${SSH_CONNECTION}" ]]; then
-		printf " %s[%sssh%s] %s%s" "${_blue_bold}" "${_cyan_bold}" "${_blue_bold}" "${_reset}" "${HOSTNAME%%.*}"
+		printf " %s[%sssh%s] %s%s" "${_orange_bold}" "${_green_bold}" "${_orange_bold}" "${_reset}" "${HOSTNAME%%.*}"
 	fi
 }
 
 function parseGitBranch() {
 	local branch
 	if branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); then
-		printf "%s(%s%s%s)%s " "${_blue_bold}" "${_reset}" "${branch}" "${_blue_bold}" "${_reset}"
+		printf "%s(%s%s%s)%s " "${_cyan_bold}" "${_reset}" "${branch}" "${_cyan_bold}" "${_reset}"
 	fi
 }
 
@@ -229,19 +231,19 @@ function trapCommand() {
 }
 PROMPT_COMMAND='AT_PROMPT=1; printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"; unset AT_PROMPT'
 
-bind "set vi-ins-mode-string ${_green_bold}INSERT${_reset}"
-bind "set vi-cmd-mode-string ${_yellow_bold}COMMAND${_reset}"
+bind "set vi-ins-mode-string ${_yellow_bold}INSERT${_reset}"
+bind "set vi-cmd-mode-string ${_reset}:${_reset}"
 PS1="\$(returnCode)"
 PS1+="\$(timestamp)"
 PS1+="\$(parseVenv)"
 PS1+="\$(parseMambaEnv)"
 PS1+="\$(parseUser)"
 PS1+="\$(parseHost)"
-PS1+="\n ${_white_bold}\w${_reset} "
+PS1+="\n ${_green_bold}\w${_reset} "
 PS1+="\$(parseGitBranch)"
 
 export PS1
-export PS4='+${BASH_SOURCE[0]##*/}($LINENO)/${FUNCNAME[0]}> '
+export PS4='+${BASH_SOURCE[0]##*/}(${LINENO})/${FUNCNAME[0]}> '
 
 # ------- #
 # Aliases #
