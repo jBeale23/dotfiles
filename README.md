@@ -1,10 +1,8 @@
 Currently includes configuration for the following:
+- Alacritty
 - Bash
-- Gnome
-- i3 window manager and the accompanying homebrewed desktop environment
-- i3blocks
-- X11
-- picom
-- udiskie
+- Sway window manager and the accompanying homebrewed desktop environment
+  - Waybar
+  - Mako
 - Mamba
 - Vim
