@@ -1,0 +1,8 @@
+background-color=#282828
+text-color=#ebdbb2
+border-color=#fe8019
+anchor=top-center
+border-size=2
+border-radius=5
+margin=5
+default-timeout=5000

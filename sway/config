@@ -1,0 +1,132 @@
+# ----- #
+# Setup #
+# ----- #
+exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME
+exec hash dbus-update-activation-environment 2>/dev/null && \
+        dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec mako
+exec udiskie &
+
+# --------------- #
+# Variable Config #
+# --------------- #
+set $mod Mod4
+set $smod Shift
+set $left h
+set $down j
+set $up k
+set $right l
+set $term alacritty
+set $menu wofi --location=center --show drun --allow-images true --insensitive true --mode overlay | xards swaymsg exec --
+set $browser firefox
+set $file_explorer nautilus
+
+for_window {
+	[class="^.*"] opacity 0.95
+	[app_id="wofi"] floating enable
+	[app_id="btop"] floating enable, resize set 1200 840
+	[title="(?:Open|Save) (?:File|Folder|As)"] floating enable, resize set 1000 700
+	[app_id="nm-connection-editor"] floating enable, resize set 1000 700
+	[app_id="pavucontrol"] floating enable, resize set 600 420
+	[app_id="blueman-manager"] floating enable, resize set 600 420
+	[app_id="org.gnome.Nautilus"] floating enable, resize set 1000 700
+	[app_id="org.gnome.Calendar"] floating enable, resize set 600 420
+	[title=".*is sharing your screen."] border none
+	[app_id="firefox"] inhibit_idle fullscreen
+}
+
+# --------- #
+# Launchers #
+# --------- #
+
+bindsym {
+	$mod+Return exec $term
+	$mod+$smod+Return exec $file_explorer
+	$mod+w exec $browser
+	$mod+d exec $menu
+	$mod+q kill
+}
+
+# ----------------------------- #
+# Change Window Splitting Modes #
+# ----------------------------- #
+
+bindsym {
+	$mod+b splith
+	$mod+v splitv
+	$mod+f fullscreen
+	$mod+$smod+space floating toggle
+	$mod+$smod+c reload
+}
+floating_modifier $mod normal
+
+# ------------------------------- #
+# Swap Focus and Window Positions #
+# ------------------------------- #
+
+bindsym {
+	$mod+$left focus left
+	$mod+$down focus down
+	$mod+$up focus up
+	$mod+$right focus right
+	$mod+$smod+$left move left
+	$mod+$smod+$down move down
+	$mod+$smod+$up move up
+	$mod+$smod+$right move right
+}
+
+# ------------------------------------- #
+# Swap Workspace Focus and Move Windows #
+# ------------------------------------- #
+bindsym  {
+	$mod+1 workspace number 1
+	$mod+2 workspace number 2
+	$mod+3 workspace number 3
+	$mod+4 workspace number 4
+	$mod+5 workspace number 5
+	$mod+6 workspace number 6
+	$mod+7 workspace number 7
+	$mod+8 workspace number 8
+	$mod+9 workspace number 9
+	$mod+0 workspace number 10
+	$mod+$smod+1 move container to workspace number 1
+	$mod+$smod+2 move container to workspace number 2
+	$mod+$smod+3 move container to workspace number 3
+	$mod+$smod+4 move container to workspace number 4
+	$mod+$smod+5 move container to workspace number 5
+	$mod+$smod+6 move container to workspace number 6
+	$mod+$smod+7 move container to workspace number 7
+	$mod+$smod+8 move container to workspace number 8
+	$mod+$smod+9 move container to workspace number 9
+	$mod+$smod+0 move container to workspace number 10
+}
+
+# ---------- #
+# Appearance #
+# ---------- #
+
+font pango:IosevkaSlabTermMono 9
+smart_gaps on
+gaps inner 2
+gaps outer 2
+default_border pixel 1
+default_floating_border pixel 2
+output * bg /home/jbeale/.config/wallpapers/.wallpaper fill
+set $bg #282828
+set $focused #3c3836
+set $fg #ebdbb2
+set $red #cc241d
+set $orange #fe8019
+
+client.focused          $orange  $focused  $fg  $focused  $orange
+client.focused_inactive $bg      $bg       $fg  $bg       $bg
+client.unfocused        $bg      $bg       $fg  $bg       $bg
+client.urgent           $red     $focused  $fg  $focused  $red
+
+# --------------- #
+# Activate Waybar #
+# --------------- #
+
+bar {
+    swaybar_command waybar
+}

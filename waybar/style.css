@@ -1,0 +1,234 @@
+@keyframes blink-warning {
+  70% {
+    color: @fg;
+  }
+
+  to {
+    color: @fg;
+    background-color: @yellow;
+  }
+}
+
+@keyframes blink-critical {
+  70% {
+    color: @fg;
+  }
+
+  to {
+    color: @fg;
+    background-color: @red;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+ * Styles
+ * -------------------------------------------------------------------------- */
+
+/* COLORS */
+
+/* Gruvbox Dark */
+
+@define-color bg #282828;
+@define-color fg_dark #3c3836;
+@define-color fg_mid #928374;
+@define-color fg #ebdbb2;
+
+@define-color yellow #d79921;
+@define-color red #cc241d;
+@define-color orange #fe8019;
+@define-color green #98971a;
+@define-color blue #458588;
+@define-color font_dark_alternative #655b53;
+
+/* Reset all styles */
+* {
+  border: none;
+  border-radius: 0px;
+  min-height: 0;
+}
+
+/* The whole bar */
+#waybar {
+  background: @bg;
+  color: @fg;
+  font-family: "IosevkaSlabTermMono", "Symbols Nerd Font", "Font Awesome";
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+/* Each module */
+#battery,
+#clock,
+#cpu,
+#network,
+#pulseaudio,
+#temperature,
+#custom-power,
+#bluetooth {
+  padding: 0.5em 0.5em;
+}
+
+/* Each module that should blink */
+#temperature,
+#battery {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* Each critical module */
+#cpu.critical,
+#temperature.critical,
+#battery.critical {
+  color: @red;
+}
+
+/* Each critical that should blink */
+#temperature.critical,
+#battery.critical.discharging {
+  animation-name: blink-critical;
+  animation-duration: 2s;
+}
+
+/* Each warning */
+#network.disconnected,
+#cpu.warning,
+#temperature.warning,
+#battery.warning {
+  background: @yellow;
+  color: @fg_dark;
+}
+
+/* Each warning that should blink */
+#battery.warning.discharging {
+  animation-name: blink-warning;
+  animation-duration: 3s;
+}
+
+#custom-arrow1 {
+  font-size: 2em;
+  color: @bg;
+  background: @blue;
+}
+#custom-arrow2 {
+  font-size: 2em;
+  color: @blue;
+  background: @fg_dark;
+}
+#custom-arrow3 {
+  font-size: 2em;
+  color: @fg_dark;
+  background: @bg;
+}
+#custom-arrow4 {
+  font-size: 2em;
+  color: @fg_dark;
+  background: @bg;
+}
+#custom-arrow5 {
+  font-size: 2em;
+  color: @blue;
+  background: @fg_dark;
+}
+#custom-arrow6 {
+  font-size: 2em;
+  color: @bg;
+  background: @blue;
+}
+
+#custom-power {
+  background: @bg;
+  color: @fg;
+}
+
+#clock.time {
+  background: @bg;
+  color: @fg;
+}
+#clock.date {
+  background: @blue;
+  color: @fg;
+}
+/* Workspaces stuff */
+#workspaces {
+}
+#workspaces button {
+  padding: 0 10px;
+  background-color: transparent;
+  color: @fg_dark;
+  border-radius: 4px;
+}
+
+/* Workspace currently focused on the active monitor */
+#workspaces button.active {
+  background-color: @orange;
+  color: @fg;
+}
+
+/* Workspace visible on other monitors but not actively focused */
+#workspaces button.visible {
+  background-color: @orange;
+  color: @bg;
+}
+
+/* Workspace has an urgent/notification alert */
+#workspaces button.urgent {
+  background-color: @yellow;
+  color: @fg;
+}
+
+/* Hover effect for workspaces */
+#workspaces button:hover {
+  background-color: @fg_mid;
+  color: @fg;
+  box-shadow: inset 0 -3px @green;
+}
+
+#battery {
+  background: @bg;
+  color: @fg;
+}
+
+#cpu {
+  background: @blue;
+  color: @fg;
+  padding-left: 0em;
+  padding-right: 0.2em;
+}
+#cpu.critical {
+  color: @fg_dark;
+  background: @red;
+}
+#temperature {
+  background-color: @blue;
+  color: @fg;
+  padding-right: 0em;
+}
+#temperature.critical {
+  background: @red;
+  color: @fg_dark;
+}
+#pulseaudio {
+  background: @bg;
+  color: @fg;
+}
+#pulseaudio.muted {
+  color: @red;
+}
+#bluetooth {
+  background: @bg;
+  color: @fg;
+}
+#network {
+  background: @bg;
+  color: @fg_mid;
+}
+#battery {
+  background: @battery;
+}
+
+#window {
+  margin-right: 40px;
+  margin-left: 40px;
+  font-weight: normal;
+}
