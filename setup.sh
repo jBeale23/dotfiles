@@ -74,22 +74,29 @@ if command -v vim &> /dev/null; then
 	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/airblade/start" ]]; then
 		mkdir -p "${HOME}/.vim/pack/airblade/start"
 		cd "${HOME}"/.vim/pack/airblade/start || exit 1
-		git clone https://github.com/airblade/vim-gitgutter.git
+		git clone --depth 1 https://github.com/airblade/vim-gitgutter.git
 		vim -u NONE -c "helptags vim-gitgutter/doc" -c q
 		cd "${WORKING_DIR}" || exit 1
 	fi
 	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/tpope/start" ]]; then
 		mkdir -p "${HOME}/.vim/pack/tpope/start"
 		cd "${HOME}/.vim/pack/tpope/start" || exit 1
-		git clone https://tpope.io/vim/fugitive.git
+		git clone --depth 1 https://tpope.io/vim/fugitive.git
 		vim -u NONE -c "helptags fugitive/doc" -c q
 		cd "${WORKING_DIR}" || exit 1
 	fi
 	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/statox/start" ]]; then
 		mkdir -p "${HOME}/.vim/pack/statox/start"
 		cd "${HOME}/.vim/pack/statox/start" || exit 1
-		git clone https://github.com/statox/FYT.vim.git
+		git clone --depth 1 https://github.com/statox/FYT.vim.git
 		vim -u NONE -c "helptags FYT/doc" -c q
+		cd "${WORKING_DIR}" || exit 1
+	fi
+	if [[ ${HAS_GIT} -eq 0 && ! -d "${HOME}/.vim/pack/dense_analysis/start" ]]; then
+		mkdir -p "${HOME}/.vim/pack/dense_analysis/start"
+		cd "${HOME}/.vim/pack/dense_analysis/start" || exit 1
+		git clone --depth 1 https://github.com/dense-analysis/ale.git
+		vim -u NONE -c "helptags ale/doc" -c q
 		cd "${WORKING_DIR}" || exit 1
 	fi
 	if command -v curl &> /dev/null && [[ ! -f "${HOME}/.vim/colors/gruvbox8.vim" ]]; then
