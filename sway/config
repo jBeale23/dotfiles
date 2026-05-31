@@ -45,6 +45,8 @@ bindsym {
 	$mod+w exec $browser
 	$mod+d exec $menu
 	$mod+q kill
+	$mod+p exec grimshot save active - | wl-copy
+	$mod+$smod+p exec grimshot save area - | wl-copy
 }
 
 # ----------------------------- #
