@@ -8,6 +8,7 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
         dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec mako
 exec udiskie &
+exec_always autotiling
 
 # --------------- #
 # Variable Config #
