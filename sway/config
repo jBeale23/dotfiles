@@ -33,6 +33,7 @@ for_window {
 	[app_id="pavucontrol"] floating enable, resize set 600 420
 	[app_id="blueman-manager"] floating enable, resize set 600 420
 	[app_id="org.gnome.Nautilus"] floating enable, resize set 1000 700
+	[app_id="org.gnome.FileRoller"] floating enable, resize set 600 420
 	[app_id="org.gnome.Calendar"] floating enable, resize set 600 420
 	[title=".*is sharing your screen."] border none
 	[app_id="firefox"] inhibit_idle fullscreen
