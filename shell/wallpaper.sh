@@ -6,8 +6,9 @@
 # ----------------------------------------------------------------------------- #
 wallpaper_dir="${HOME}/.config/wallpapers"
 SWAYSOCK=$(find /run/user/1000/sway*sock)
-if [[ -d ${wallpaper_dir} ]]; then
-	wallpaper=$(find "${wallpaper_dir}" -maxdepth 1 -type f -print0 \( -name "*.png" -o -name "*.jpg" \) | shuf -z -n 1 | tr '\0' '\n')
+if [[ -d ${wallpaper_dir} ]] && find "${wallpaper_dir}" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" \) &> /dev/null; then
+	wallpaper=$(find "${wallpaper_dir}" -maxdepth 1 -type f ! -atime -1 -print0 \( -name "*.png" -o -name "*.jpg" \) | shuf -z -n 1 | tr '\0' '\n')
+	[[ -z ${wallpaper} ]] && wallpaper=$(find "${wallpaper_dir}" -maxdepth 1 -type f -print0 \( -name "*.png" -o -name "*.jpg" \) | shuf -z -n 1 | tr '\0' '\n')
 	ln -fs "$(realpath "${wallpaper}")" "${HOME}/.config/wallpapers/.wallpaper"
 	swaymsg -s "${SWAYSOCK}" output '*' bg "${HOME}/.config/wallpapers/.wallpaper" fill
 fi
