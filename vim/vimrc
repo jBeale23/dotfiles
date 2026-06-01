@@ -7,7 +7,7 @@ set mouse=a                       " Enable mouse support in all modes
 set confirm                       " Confirm when trying to quit without saving
 set clipboard=unnamedplus         " Use system clipboard
 autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
-nnoremap <silent> p :execute 'normal! a' . substitute(system('wl-paste'), '\n$', '', '')<CR>
+nnoremap <silent> p :let @+ = system('wl-paste --no-newline')<CR>"+p
 
 if has('persistent_undo')         " Enable per-file undo history
 	let target_path = expand('~/.vim/undo/')
