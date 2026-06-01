@@ -25,8 +25,8 @@
 				"critical": 15
 		},
 		"format": "{icon} {capacity}%",
-		"format-charging": "󱊥 {capacity}%",
-		"format-icons": ["", "", "", "", ""],
+		"format-charging": "󱊥  {capacity}%",
+		"format-icons": ["󱊡", "󱊢", "󱊣"],
 		"tooltip": false
 	},
 	"bluetooth": {
@@ -67,7 +67,7 @@
         "tooltip": false
     },
     "network": {
-        "format-wifi": "<span color=\"#ebdbb2\"></span>   {essid}",
+        "format-wifi": "  {essid}",
         "format-ethernet": "{ifname}: {ipaddr}/{cidr}",
         "format-disconnected": "  Disconnected",
         "family": "ipv4",
