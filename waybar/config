@@ -46,7 +46,7 @@
     },
     "clock#date": {
         "interval": 20,
-        "format": "{:  %a %e/%m}",
+        "format": "{:  %A %Y/%m/%d}",
         "on-click": "gnome-calendar"
     },
     "temperature": {
