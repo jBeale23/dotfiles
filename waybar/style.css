@@ -4,8 +4,7 @@
   }
 
   to {
-    color: @fg;
-    background-color: @yellow;
+    color: @yellow;
   }
 }
 
@@ -15,8 +14,7 @@
   }
 
   to {
-    color: @fg;
-    background-color: @red;
+    color: @red;
   }
 }
 
@@ -38,7 +36,6 @@
 @define-color orange #fe8019;
 @define-color green #98971a;
 @define-color blue #458588;
-@define-color font_dark_alternative #655b53;
 
 /* Reset all styles */
 * {
@@ -50,7 +47,7 @@
 /* The whole bar */
 #waybar {
   background: @bg;
-  color: @fg;
+  color: @fg_mid;
   font-family: "IosevkaSlabTermMono", "Symbols Nerd Font", "Font Awesome";
   font-size: 9pt;
   font-weight: bold;
@@ -95,8 +92,7 @@
 #cpu.warning,
 #temperature.warning,
 #battery.warning {
-  background: @yellow;
-  color: @fg_dark;
+  color: @yellow;
 }
 
 /* Each warning that should blink */
@@ -138,43 +134,47 @@
 
 #custom-power {
   background: @bg;
+  color: @fg_mid;
+}
+
+#custom-power:hover {
   color: @fg;
 }
 
 #clock.time {
   background: @bg;
-  color: @fg;
+  color: @fg_mid;
 }
+
 #clock.date {
   background: @blue;
+  color: @fg_dark;
+}
+
+#clock.date:hover {
   color: @fg;
 }
+
 /* Workspaces stuff */
 #workspaces {
 }
 #workspaces button {
   padding: 0 10px;
   background-color: transparent;
-  color: @fg_dark;
+  color: @fg_mid;
   border-radius: 4px;
-}
-
-/* Workspace currently focused on the active monitor */
-#workspaces button.active {
-  background-color: @orange;
-  color: @fg;
 }
 
 /* Workspace visible on other monitors but not actively focused */
 #workspaces button.visible {
   background-color: @orange;
-  color: @bg;
+  color: @fg;
 }
 
 /* Workspace has an urgent/notification alert */
 #workspaces button.urgent {
-  background-color: @yellow;
-  color: @fg;
+  animation-name: blink-warning;
+  animation-duration: 3s;
 }
 
 /* Hover effect for workspaces */
@@ -186,30 +186,34 @@
 
 #battery {
   background: @bg;
-  color: @fg;
+  color: @fg_mid;
 }
 
 #cpu {
   background: @blue;
-  color: @fg;
+  color: @fg_dark;
   padding-left: 0em;
   padding-right: 0.2em;
 }
+#cpu:hover {
+  color: @fg;
+}
 #cpu.critical {
-  color: @fg_dark;
-  background: @red;
+  color: @red;
 }
 #temperature {
   background-color: @blue;
-  color: @fg;
+  color: @fg_dark;
   padding-right: 0em;
 }
 #temperature.critical {
-  background: @red;
-  color: @fg_dark;
+  color: @red;
 }
 #pulseaudio {
   background: @bg;
+  color: @fg_mid;
+}
+#pulseaudio:hover {
   color: @fg;
 }
 #pulseaudio.muted {
@@ -217,14 +221,19 @@
 }
 #bluetooth {
   background: @bg;
+  color: @fg_mid;
+}
+#bluetooth:hover {
   color: @fg;
 }
+
 #network {
   background: @bg;
   color: @fg_mid;
 }
-#battery {
-  background: @battery;
+
+#network:hover {
+  color: @fg;
 }
 
 #window {
