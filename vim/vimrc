@@ -80,12 +80,13 @@ if !exists('g:loaded_ale') && findfile('pack/ale.vim', &rtp) ==# ''
 	\   'c': ['clangd', 'clang-format'],
 	\   'css': ['prettier'],
 	\   'dockerfile': ['hadolint'],
+	\   'go': ['gopls', 'gofmt'],
 	\   'html': ['prettier'],
 	\   'json': ['prettier'],
 	\   'make': ['checkmake'],
 	\   'python': ['pyrefly', 'ruff', 'ruff_format'],
 	\   'sh': ['language_server', 'shellcheck', 'shfmt'],
-	\   'yaml': ['yaml-language-server', 'prettier'],
+	\   'yaml': ['prettier'],
 	\}
 	nnoremap <leader>gd <cmd>ALEGoToDefinition<CR>
 	nnoremap <leader>gi <cmd>ALEGoToImplementation<CR>
