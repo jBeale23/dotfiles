@@ -1,18 +1,10 @@
 @keyframes blink-warning {
-  70% {
-    color: @fg;
-  }
-
   to {
     color: @yellow;
   }
 }
 
 @keyframes blink-critical {
-  70% {
-    color: @fg;
-  }
-
   to {
     color: @red;
   }
@@ -68,15 +60,14 @@
 /* Each module that should blink */
 #temperature,
 #battery {
+  animation-duration: 2s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
 
 /* Each critical module */
-#cpu.critical,
-#temperature.critical,
-#battery.critical {
+#cpu.critical {
   color: @red;
 }
 
@@ -84,7 +75,6 @@
 #temperature.critical,
 #battery.critical.discharging {
   animation-name: blink-critical;
-  animation-duration: 2s;
 }
 
 /* Each warning */
@@ -98,7 +88,6 @@
 /* Each warning that should blink */
 #battery.warning.discharging {
   animation-name: blink-warning;
-  animation-duration: 3s;
 }
 
 #custom-arrow1 {
@@ -139,6 +128,7 @@
 
 #custom-power:hover {
   color: @fg;
+  box-shadow: inset 0 -3px @green;
 }
 
 #clock.time {
@@ -174,7 +164,6 @@
 /* Workspace has an urgent/notification alert */
 #workspaces button.urgent {
   animation-name: blink-warning;
-  animation-duration: 3s;
 }
 
 /* Hover effect for workspaces */
@@ -198,16 +187,10 @@
 #cpu:hover {
   color: @fg;
 }
-#cpu.critical {
-  color: @red;
-}
 #temperature {
   background-color: @blue;
   color: @fg_dark;
   padding-right: 0em;
-}
-#temperature.critical {
-  color: @red;
 }
 #pulseaudio {
   background: @bg;
@@ -215,6 +198,7 @@
 }
 #pulseaudio:hover {
   color: @fg;
+  box-shadow: inset 0 -3px @green;
 }
 #pulseaudio.muted {
   color: @red;
@@ -225,6 +209,7 @@
 }
 #bluetooth:hover {
   color: @fg;
+  box-shadow: inset 0 -3px @green;
 }
 
 #network {
@@ -234,6 +219,7 @@
 
 #network:hover {
   color: @fg;
+  box-shadow: inset 0 -3px @green;
 }
 
 #window {
