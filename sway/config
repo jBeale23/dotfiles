@@ -28,7 +28,7 @@ for_window {
 	[app_id="wofi"] floating enable
 	[app_id="btop"] floating enable, resize set 1200 840
 	[title="(?:Open|Save) (?:File|Folder|As)"] floating enable, resize set 1000 700
-	[app_id="nm-connection-editor"] floating enable, resize set 1000 700
+	[app_id="nmtui"] floating enable, resize set 1000 700
 	[app_id="pavucontrol"] floating enable, resize set 600 420
 	[app_id="blueman-manager"] floating enable, resize set 600 420
 	[app_id="org.gnome.Nautilus"] floating enable, resize set 1000 700
