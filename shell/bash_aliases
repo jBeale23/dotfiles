@@ -138,7 +138,7 @@ fi
 # Shell Cheatsheet #
 # ---------------- #
 function cs() {
-	curl -s "https://cht.sh/${1}?qT&style=bw"
+	curl -s "https://cheat.sh/${1}?q&style=gruvbox-dark"
 }
 
 # ----------- #
