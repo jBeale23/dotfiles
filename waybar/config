@@ -11,10 +11,12 @@
         "all-outputs": true,
         "format": "{icon}",
         "format-icons": {
-            "1": "Home",
-            "2": "Work",
-            "3": "Music",
-            "4": "Misc",
+            "1": "Shell",
+            "2": "Browser",
+            "3": "Code",
+            "4": "Files",
+            "5": "Media",
+            "6": "Misc",
             "urgent": "",
             "default": ""
         }
