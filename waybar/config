@@ -1,30 +1,55 @@
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
+	"layer": "top", // Waybar at top layer
+	"position": "top", // Waybar position (top|bottom|left|right)
 
-    "modules-left": ["clock#time", "custom/arrow1", "clock#date", "custom/arrow2", "custom/arrow3"],
-    "modules-center": ["sway/workspaces"],
-    "modules-right": ["custom/arrow4", "custom/arrow5", "temperature", "cpu", "custom/arrow6", "network", "bluetooth", "pulseaudio", "battery", "custom/power"],
+	"modules-left": [
+		"clock#time",
+		"custom/arrow1",
+		"clock#date",
+		"custom/arrow2",
+		"custom/arrow3"
+	],
+	"modules-center": ["sway/workspaces"],
+	"modules-right": [
+		"custom/arrow4",
+		"custom/arrow5",
+		"temperature",
+		"cpu",
+		"custom/arrow6",
+		"network",
+		"bluetooth",
+		"pulseaudio",
+		"battery",
+		"custom/power"
+	],
 
-    "sway/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "format": "{icon}",
-        "format-icons": {
-            "1": "Shell",
-            "2": "Browser",
-            "3": "Code",
-            "4": "Files",
-            "5": "Media",
-            "6": "Misc",
-            "urgent": "",
-            "default": ""
-        }
-    },
+	"sway/workspaces": {
+		"disable-scroll": true,
+		"all-outputs": true,
+		"format": "{icon}",
+		"format-icons": {
+			"1": "Shell",
+			"2": "Browser",
+			"3": "Code",
+			"4": "Files",
+			"5": "Media",
+			"6": "Misc",
+			"urgent": "",
+			"default": ""
+		},
+		"persistent-workspaces": {
+			"1": [],
+			"2": [],
+			"3": [],
+			"4": [],
+			"5": [],
+			"6": []
+		}
+	},
 	"battery": {
 		"states": {
-				"warning": 30,
-				"critical": 15
+			"warning": 30,
+			"critical": 15
 		},
 		"format": "{icon} {capacity}%",
 		"format-charging": "󱊥  {capacity}%",
@@ -41,82 +66,81 @@
 		"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
 		"on-click": "blueman-manager"
 	},
-    "clock#time": {
-        "interval": 10,
-        "format": "{:%H:%M}",
-        "tooltip": false
-    },
-    "clock#date": {
-        "interval": 20,
-        "format": "{:  %A %Y/%m/%d}",
-        "on-click": "gnome-calendar"
-    },
-    "temperature": {
-        "interval": "1",
-        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
-        "critical-threshold": 75,
-        "format-critical": "  {temperatureC}°C",
-        "format": "{icon}  {temperatureC}°C",
-        "format-icons": [""],
-        "max-length": 8,
-        "min-length": 7,
-        "tooltip": false
-    },
-    "cpu": {
-        "interval": 5,
-        "format": "  {usage:2}%",
-        "on-click": "alacritty --class btop -e btop",
-        "tooltip": false
-    },
-    "network": {
-        "format-wifi": "  {essid}",
-        "format-ethernet": "{ifname}: {ipaddr}/{cidr}",
-        "format-disconnected": "  Disconnected",
-        "family": "ipv4",
-        "tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthUpBits}  {bandwidthDownBits}",
-        "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n {bandwidthUpBits}  {bandwidthDownBits}",
+	"clock#time": {
+		"interval": 10,
+		"format": "{:%H:%M}",
+		"tooltip": false
+	},
+	"clock#date": {
+		"interval": 20,
+		"format": "{:  %A %Y/%m/%d}",
+		"on-click": "gnome-calendar"
+	},
+	"temperature": {
+		"interval": "1",
+		"hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+		"critical-threshold": 75,
+		"format-critical": "  {temperatureC}°C",
+		"format": "{icon}  {temperatureC}°C",
+		"format-icons": [""],
+		"max-length": 8,
+		"min-length": 7,
+		"tooltip": false
+	},
+	"cpu": {
+		"interval": 5,
+		"format": "  {usage:2}%",
+		"on-click": "alacritty --class btop -e btop",
+		"tooltip": false
+	},
+	"network": {
+		"format-wifi": "  {essid}",
+		"format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+		"format-disconnected": "  Disconnected",
+		"family": "ipv4",
+		"tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthUpBits}  {bandwidthDownBits}",
+		"tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n {bandwidthUpBits}  {bandwidthDownBits}",
 		"on-click": "alacritty --class nmtui -e ~/.config/waybar/nmtui_colors.sh"
-
 	},
 	"pulseaudio": {
 		"format": "{icon}  {volume:2}%",
 		"format-muted": " Muted",
 		"format-icons": {
-				"default": ["", "", ""]
+			"default": ["", "", ""]
 		},
 		"max-volume": 100,
-        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+		"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
 		"on-click-right": "pavucontrol",
 		"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
-        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+		"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
 	},
 	"custom/power": {
 		"format": "",
 		"tooltip": false,
 		"on-click": "~/.config/waybar/power_menu.sh"
 	},
-    "custom/arrow1": {
-        "format": "",
-        "tooltip": false
-    },
-    "custom/arrow2": {
-        "format": "",
-        "tooltip": false
-    },
-    "custom/arrow3": {
-        "format": "",
-        "tooltip": false
-    },
-    "custom/arrow4": {
-        "format": "",
-        "tooltip": false
-    },
-    "custom/arrow5": {
-        "format": "",
-        "tooltip": false
-    },
-    "custom/arrow6": {
-        "format": "",
-        "tooltip": false
-    },
+	"custom/arrow1": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/arrow2": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/arrow3": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/arrow4": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/arrow5": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/arrow6": {
+		"format": "",
+		"tooltip": false
+	}
 }
