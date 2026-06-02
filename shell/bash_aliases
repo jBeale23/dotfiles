@@ -75,7 +75,7 @@ function gmb() {
 # -------------------------------------------------------------------------- #
 function gnb() {
 	local branchname
-	branchname="dev/${1:-$(printf "%s-%(%Y-%m-%d)T" "${USER}" -1)}"
+	branchname="${1:-dev/$(printf "%s-%(%Y-%m-%d)T" "${USER}" -1)}"
 	git checkout -b "${branchname}"
 }
 
