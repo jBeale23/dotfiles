@@ -58,8 +58,6 @@ bindsym {
 # ----------------------------- #
 
 bindsym {
-	$mod+b splith
-	$mod+v splitv
 	$mod+f fullscreen
 	$mod+$smod+space floating toggle
 	$mod+$smod+c reload
