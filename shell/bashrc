@@ -45,7 +45,7 @@ export LESS_TERMCAP_ZV=$'\e[75m'
 export LESS_TERMCAP_ZO=$'\e[73m'
 export LESS_TERMCAP_ZW=$'\e[75m'
 export GROFF_NO_SGR=1
-export PAGER='less'
+export PAGER="less"
 export MANPAGER="${PAGER}"
 
 # --------------------- #
@@ -62,6 +62,7 @@ export HISTIGNORE="&:ls:ll:la:l:lt:pwd:exit:\:e\:q:history:grep"
 # ------------------- #
 export LANG="en_US.UTF-8"
 export TMPDIR="/tmp"
+export BROWSER="firefox"
 export NEWT_COLORS='root=black,default; window=lightgray,default; border=darkgray,default; title=lightgray,default; button=black,green; button_active=black,yellow; actbutton=black,yellow; checkbox=yellow,default; actlistbox=yellow,black; sellistbox=white,green; entry=yellow,default; label=lightgray,default; textbox=lightgray,default; acttextbox=yellow,black;'
 
 # ------------------------- #
