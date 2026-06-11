@@ -24,7 +24,7 @@ set splitbelow                    " Open new horizontal splits below
 set splitright                    " Open new vertical splits to the right
 set formatoptions+=j              " Delete comment character when joining lines
 set ttimeout                      " Make ESC more responsive
-set ttimeoutlen=100
+set ttimeoutlen=100               " ^
 set updatetime=100                " Makes async functions more responsive
 let g:FYT_flash_time = 200        " Sets highlight on yank time (Miliseconds)
 
@@ -75,24 +75,33 @@ if !exists('g:loaded_ale') && findfile('pack/ale.vim', &rtp) ==# ''
 	let g:ale_lint_on_save = 1
 	runtime! pack/ale.vim
 	set omnifunc=ale#completion#OmniFunc
+	let g:ale_linters = {
+	\   'c': ['clang', 'clangd', 'gcc'],
+	\   'python': ['pyrefly', 'ruff'],
+	\   'sh': ['language_server', 'shellcheck'],
+	\}
 	let g:ale_fixers = {
 	\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-	\   'c': ['clangd', 'clang-format'],
+	\   'c': ['clangtidy','clang-format'],
 	\   'css': ['prettier'],
 	\   'dockerfile': ['hadolint'],
 	\   'go': ['gopls', 'gofmt'],
 	\   'html': ['prettier'],
 	\   'json': ['prettier'],
 	\   'make': ['checkmake'],
-	\   'python': ['pyrefly', 'ruff', 'ruff_format'],
-	\   'sh': ['language_server', 'shellcheck', 'shfmt'],
+	\   'python': ['ruff', 'ruff_format'],
+	\   'sh': ['shfmt'],
 	\   'yaml': ['prettier'],
 	\}
+	let g:ale_c_gcc_options = '-std=c99 -Wall -Wextra'
+	let g:ale_c_clang_options = '-std=c99 -Wall -Wextra'
 	nnoremap <leader>gd <cmd>ALEGoToDefinition<CR>
 	nnoremap <leader>gi <cmd>ALEGoToImplementation<CR>
 	nnoremap <leader>gr <cmd>ALEFindReferences<CR>
+	nnoremap grn <Plug>(ale_rename)
 	nnoremap <leader>ca <cmd>ALECodeAction<CR>
 	nnoremap <leader>f <cmd>ALEFix<CR>
+	nnoremap K <cmd>ALEHover<CR>
 endif
 
 
@@ -114,6 +123,7 @@ filetype plugin indent on         " Enable filetype detection based behavior
 augroup spellcheck
 	autocmd!
 	autocmd FileType markdown,text setlocal spell dictionary+=/usr/share/dict/words complete+=k
+	autocmd BufNewFile,BufRead *.nf,nextflow.config set filetype=groovy
 augroup END
 
 " --------------- "
