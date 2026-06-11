@@ -46,7 +46,7 @@ export LESS_TERMCAP_ZO=$'\e[73m'
 export LESS_TERMCAP_ZW=$'\e[75m'
 export GROFF_NO_SGR=1
 export PAGER="less"
-export MANPAGER="${PAGER}"
+export MANPAGER="vim -M +MANPAGER -"
 
 # --------------------- #
 # History Configuration #
