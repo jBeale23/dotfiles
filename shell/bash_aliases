@@ -26,6 +26,13 @@ if printf "test" | grep --color=auto "test" &>/dev/null; then
 fi
 alias hgrep='history | grep'
 
+# ---------- #
+# IP aliases #
+# ---------- #
+if ip --color=auto a &>/dev/null; then
+	alias ip='ip --color=auto'
+fi
+
 # ------------------ #
 # Navigation aliases #
 # ------------------ #
