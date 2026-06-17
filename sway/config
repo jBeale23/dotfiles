@@ -28,7 +28,7 @@ set $browser firefox
 set $file_explorer nautilus
 
 for_window {
-	[class="^.*"] opacity 0.95
+	[app_id="^(?!firefox).*$"] opacity 0.88
 	[app_id="wofi"] floating enable
 	[app_id="btop"] floating enable, resize set 1200 840
 	[title="(?:Open|Save) (?:File|Folder|As)"] floating enable, resize set 1000 700
@@ -39,7 +39,7 @@ for_window {
 	[app_id="org.gnome.FileRoller"] floating enable, resize set 600 420
 	[app_id="org.gnome.Calendar"] floating enable, resize set 600 420
 	[title=".*is sharing your screen."] border none
-	[app_id="firefox"] inhibit_idle fullscreen
+	[app_id="firefox"] inhibit_idle fullscreen, move container to workspace 2
 }
 
 # --------- #
