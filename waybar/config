@@ -1,15 +1,16 @@
 {
-	"layer": "top", // Waybar at top layer
-	"position": "top", // Waybar position (top|bottom|left|right)
+	"layer": "top",
+	"position": "top",
 
 	"modules-left": [
-		"clock#time",
+		"sway/workspaces",
 		"custom/arrow1",
-		"clock#date",
+		"memory",
+		"disk",
 		"custom/arrow2",
 		"custom/arrow3"
 	],
-	"modules-center": ["sway/workspaces"],
+	"modules-center": ["clock#time"],
 	"modules-right": [
 		"custom/arrow4",
 		"custom/arrow5",
@@ -54,27 +55,38 @@
 		"format": "{icon} {capacity}%",
 		"format-charging": "󱊥  {capacity}%",
 		"format-icons": ["󱊡", "󱊢", "󱊣"],
-		"tooltip": false
+		"tooltip": false,
+		"max-length": 7,
+		"min-length": 7
 	},
 	"bluetooth": {
 		"format": "",
 		"format-disabled": "",
 		"format-connected": "",
-		"format-connected-battery": " {device_alias} {device_battery_percentage}%",
+		"format-connected-battery": "  {device_alias} {device_battery_percentage}%",
 		"tooltip-format": "{controller_alias}\t{status}\n\n{device_enumerate}",
 		"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
 		"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-		"on-click": "blueman-manager"
+		"on-click": "blueman-manager",
+		"min-length": 24,
+		"max-length": 24
 	},
 	"clock#time": {
 		"interval": 10,
 		"format": "{:%H:%M}",
-		"tooltip": false
-	},
-	"clock#date": {
-		"interval": 20,
-		"format": "{:  %A %Y/%m/%d}",
 		"on-click": "gnome-calendar"
+	},
+	"memory": {
+		"interval": 30,
+		"format": "󰘚  {used:0.0f}G / {total:0.0f}G",
+		"max-length": 10,
+		"min-length": 10
+	},
+	"disk": {
+		"interval": 30,
+		"format": " {percentage_used}%",
+		"max-length": 8,
+		"min-length": 8
 	},
 	"temperature": {
 		"interval": "1",
@@ -84,23 +96,27 @@
 		"format": "{icon}  {temperatureC}°C",
 		"format-icons": [""],
 		"max-length": 8,
-		"min-length": 7,
+		"min-length": 8,
 		"tooltip": false
 	},
 	"cpu": {
 		"interval": 5,
 		"format": "  {usage:2}%",
 		"on-click": "alacritty --class btop -e btop",
+		"max-length": 10,
+		"min-length": 10,
 		"tooltip": false
 	},
 	"network": {
 		"format-wifi": "  {essid}",
-		"format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+		"format-ethernet": "   {ifname}",
 		"format-disconnected": "  Disconnected",
 		"family": "ipv4",
 		"tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthUpBits}  {bandwidthDownBits}",
 		"tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n {bandwidthUpBits}  {bandwidthDownBits}",
-		"on-click": "alacritty --class nmtui -e ~/.config/waybar/nmtui_colors.sh"
+		"on-click": "alacritty --class nmtui -e ~/.config/waybar/nmtui_colors.sh",
+		"max-length": 18,
+		"min-length": 18
 	},
 	"pulseaudio": {
 		"format": "{icon}  {volume:2}%",
@@ -112,12 +128,16 @@
 		"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
 		"on-click-right": "pavucontrol",
 		"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
-		"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+		"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+		"max-length": 7,
+		"min-length": 7
 	},
 	"custom/power": {
 		"format": "",
 		"tooltip": false,
-		"on-click": "~/.config/waybar/power_menu.sh"
+		"on-click": "~/.config/waybar/power_menu.sh",
+		"max-length": 1,
+		"min-length": 1
 	},
 	"custom/arrow1": {
 		"format": "",
