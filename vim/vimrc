@@ -6,8 +6,10 @@ set nocompatible            " Use Vim defaults instead of old Vi behavior
 set mouse=a                       " Enable mouse support in all modes
 set confirm                       " Confirm when trying to quit without saving
 set clipboard=unnamedplus         " Use system clipboard
-autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
-nnoremap <silent> p :let @+ = system('wl-paste --no-newline')<CR>"+p
+if executable('wl-copy') && executable('wl-paste')
+	autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
+	nnoremap <silent> p :let @+ = system('wl-paste --no-newline')<CR>"+p
+endif
 
 if has('persistent_undo')         " Enable per-file undo history
 	let target_path = expand('~/.vim/undo/')
