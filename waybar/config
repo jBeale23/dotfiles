@@ -109,11 +109,11 @@
 	},
 	"network": {
 		"format-wifi": "  {essid}",
-		"format-ethernet": "   {ifname}",
+		"format-ethernet": "󰛳  Wired",
 		"format-disconnected": "  Disconnected",
 		"family": "ipv4",
 		"tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\n {bandwidthUpBits}  {bandwidthDownBits}",
-		"tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n {bandwidthUpBits}  {bandwidthDownBits}",
+		"tooltip-format-ethernet": "󰛳   {ifname}\nIP: {ipaddr}\n {bandwidthUpBits}  {bandwidthDownBits}",
 		"on-click": "alacritty --class nmtui -e ~/.config/waybar/nmtui_colors.sh",
 		"max-length": 18,
 		"min-length": 18
@@ -129,8 +129,8 @@
 		"on-click-right": "pavucontrol",
 		"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
 		"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
-		"max-length": 7,
-		"min-length": 7
+		"max-length": 10,
+		"min-length": 10
 	},
 	"custom/power": {
 		"format": "",
@@ -164,3 +164,4 @@
 		"tooltip": false
 	}
 }
+// vim: set filetype=json:
