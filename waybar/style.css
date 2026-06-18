@@ -138,6 +138,7 @@
 
 #clock.time:hover {
 	color: @fg;
+	box-shadow: inset 0 -3px @green;
 }
 
 /* Workspaces stuff */
