@@ -113,12 +113,21 @@ fi
 # Mako #
 # ---- #
 if command -v mako &> /dev/null; then
+	mkdir -p "${HOME}/.config/mako"
 	if [[ ! -f "${HOME}/.config/mako/config" ]]; then
 		ln -s "${WORKING_DIR}/mako/config" "${HOME}/.config/mako/config"
 	else
 		printf "WARNING: mako config already exists, not overwriting.\n" >&2
 	fi
+fi
 
+if command -v wofi &> /dev/null; then
+	mkdir -p "${HOME}/.config/wofi"
+	if [[ ! -f "${HOME}/.config/wofi/style.css" ]]; then
+		ln -s "${WORKING_DIR}/wofi/style.css" "${HOME}/.config/wofi/style.css"
+	else
+		printf "WARNING: wofi style.css already exists, not overwriting.\n" >&2
+	fi
 fi
 
 printf "Setup Complete. Please restart your shell or source ~/.bashrc for changes to take effect.\n"
