@@ -1,8 +1,6 @@
 # ----- #
 # Setup #
 # ----- #
-exec export XDG_CURRENT_DESKTOP="sway"
-exec export MOZ_ENABLE_WAYLAND=1
 exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME
 exec hash dbus-update-activation-environment 2>/dev/null && \
         dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
@@ -23,7 +21,7 @@ set $down j
 set $up k
 set $right l
 set $term alacritty
-set $menu wofi --location=center --show drun --allow-images true --insensitive true --mode overlay | xards swaymsg exec --
+set $menu wofi --location=center --show drun --allow-images true --insensitive true --mode overlay | xargs swaymsg exec --
 set $browser firefox
 set $file_explorer nautilus
 
