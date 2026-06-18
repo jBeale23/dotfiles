@@ -65,6 +65,7 @@ set formatoptions+=j              " Delete comment character when joining lines
 set ttimeout                      " Make ESC more responsive
 set ttimeoutlen=100               " ^
 set updatetime=100                " Makes async functions more responsive
+set autoread                      " Autoupdate buffers on external edit
 let g:FYT_flash_time = 200        " Sets highlight on yank time (Miliseconds)
 
 " ---------- "
@@ -147,7 +148,8 @@ endif
 set showcmd                    " Show incomplete commands in bottom bar
 set wildmenu                   " Visual autocomplete for commands
 set wildoptions=pum,fuzzy      " Use popup menu style, and fuzzy matching for wildmenu
-set wildmode=list:longest,full " List all matches while completing the longest, then cycle
+set wildignore+=**/.git/**     " Ignore .git when matching file paths
+set wildmode=noselect          " Make it possible to backspace while wildtrigger is active
 if exists('*wildtrigger')      " Automatically enable wildmenu for the command line while typing
 	augroup cmdcomplete
 		au!
