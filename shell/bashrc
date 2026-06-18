@@ -225,13 +225,9 @@ function parseGitBranch() {
 }
 
 function trapCommand() {
-	if [[ -n "${AT_PROMPT}" ]]; then
-		return
-	fi
 	printf "\033]0;%s\033\\" "${BASH_COMMAND}"
-	"${REPOSITORY_DIR}/cmd-log/cmd-log" --database="${HOME}/.cmd-log.db" -- "${BASH_COMMAND}"
 }
-PROMPT_COMMAND='AT_PROMPT=1; printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"; unset AT_PROMPT'
+PROMPT_COMMAND='printf "\033]0;%s\033\\" "${PWD/#${HOME}/~}"'
 
 bind "set vi-ins-mode-string ${_yellow_bold}INSERT${_reset}"
 bind "set vi-cmd-mode-string ${_reset}:${_reset}"
