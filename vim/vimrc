@@ -1,5 +1,42 @@
 set nocompatible            " Use Vim defaults instead of old Vi behavior
 
+" ---------------- "
+" Plugin Bootstrap "
+" ---------------- "
+if executable('curl')
+	let target_path = expand('~/.vim/colors/gruvbox8.vim')
+	if !filereadable(target_path)
+		echo "Installing gruvbox colortheme..."
+		silent exec "!curl -fLo ~/.vim/colors/gruvbox8.vim --create-dirs https://codeberg.org/lifepillar/vim-gruvbox8/raw/commit/ee054a75163bdfcbbc98c19a9e70ec4ff8af5aee/colors/gruvbox8.vim"
+	endif
+else
+	echoerr "Curl is required to bootstrap colorscheme"
+	execute "q!"
+endif
+if executable('git')
+	" Git Gutter
+	let target_path = expand('~/.vim/pack/airblade/start/vim-gitgutter')
+	if ! isdirectory(target_path)
+		echo "Installing vim-gitgutter..."
+		silent exec "!git clone --depth 1 https://github.com/airblade/vim-gitgutter.git "target_path
+	endif
+	" Flash Yank Text
+	let target_path = expand('~/.vim/pack/statox/start/FYT.vim')
+	if !isdirectory(target_path)
+		echo "Installing FYT..."
+		silent exec "!git clone --depth 1 https://github.com/statox/FYT.vim.git "target_path
+	endif
+	" ALE
+	let target_path = expand('~/.vim/pack/dense_analysis/start/ale')
+	if !isdirectory(target_path)
+		echo "Installing ALE..."
+		silent exec "!git clone --depth 1 https://github.com/dense-analysis/ale.git"target_path
+	endif
+else
+	echoerr "Git is required to boostrap plugins"
+	execute "q!"
+endif
+
 " -------- "
 " BEHAVIOR "
 " -------- "
@@ -71,7 +108,7 @@ set autoindent              " Copy indent from current line when starting a new 
 set complete=.,w,b,u,t,i
 set completeopt=menuone,noinsert,noselect,preview
 let mapleader = " "
-if !exists('g:loaded_ale') && findfile('pack/ale.vim', &rtp) ==# ''
+if !exists('g:loaded_ale')
 	let g:ale_completion_enabled = 1
 	let g:ale_lint_on_insert_leave = 1
 	let g:ale_lint_on_save = 1
@@ -148,5 +185,7 @@ endif
 
 " Enable the :Man command shipped inside Vim's man filetype plugin.
 if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
-	runtime ftplugin/man.vim
+	runtime! ftplugin/man.vim
 endif
+
+helptags ALL
