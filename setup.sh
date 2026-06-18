@@ -110,6 +110,7 @@ fi
 # Alacritty #
 # --------- #
 if [[ ! -f "${HOME}/.config/alacritty/alacritty.toml" ]]; then
+	mkdir -p "${HOME}/.config/alacritty"
 	ln -s "${WORKING_DIR}/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
 else
 	printf "WARNING: alacritty.toml already exists, not overwriting.\n" >&2
@@ -119,6 +120,7 @@ fi
 # Sway #
 # ---- #
 if command -v sway &> /dev/null; then
+	mkdir -p "${HOME}/.config/sway"
 	if [[ ! -f "${HOME}/.config/sway/config" ]]; then
 		ln -s "${WORKING_DIR}/sway/config" "${HOME}/.config/sway/config"
 	else
@@ -130,6 +132,7 @@ fi
 # Waybar #
 # ------ #
 if command -v waybar &> /dev/null; then
+	mkdir -p "${HOME}/.config/waybar"
 	for file in "${WORKING_DIR}"/waybar/*; do
 		if [[ ! -f "${HOME}/.config/waybar/${file##*/}" ]]; then
 			ln -s "${file}" "${HOME}/.config/waybar"
