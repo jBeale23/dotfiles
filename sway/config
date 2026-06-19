@@ -12,6 +12,12 @@ input type:touchpad {
 	events disabled_on_external_mouse
 }
 
+set $lock ~/.config/sway/lockscreen.sh
+exec swayidle -w \
+	idlehint 1 \
+	before-sleep "$lock" \
+	lock "$lock"
+
 # --------------- #
 # Variable Config #
 # --------------- #
@@ -150,7 +156,7 @@ gaps inner 2
 gaps outer 2
 default_border pixel 1
 default_floating_border pixel 2
-output * bg /home/jbeale/.config/wallpapers/.wallpaper fill
+output * bg ~/.config/wallpapers/.wallpaper fill
 set $bg #282828
 set $focused #3c3836
 set $fg #ebdbb2

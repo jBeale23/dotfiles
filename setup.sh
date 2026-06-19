@@ -88,11 +88,13 @@ fi
 # ---- #
 if command -v sway &> /dev/null; then
 	mkdir -p "${HOME}/.config/sway"
-	if [[ ! -f "${HOME}/.config/sway/config" ]]; then
-		ln -s "${WORKING_DIR}/sway/config" "${HOME}/.config/sway/config"
-	else
-		printf "WARNING: sway config already exists, not overwriting.\n" >&2
-	fi
+	for file in "${WORKING_DIR}"/sway/*; do
+		if [[ ! -f "${HOME}/.config/sway/${file##*/}" ]]; then
+			ln -s "${file}" "${HOME}/.config/sway"
+		else
+			printf "WARNING: sway %s already exists, not overwriting.\n" "${file##*/}" >&2
+		fi
+	done
 fi
 
 # ------ #
