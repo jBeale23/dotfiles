@@ -1,0 +1,113 @@
+set nocompatible            " Use Vim defaults instead of old Vi behavior
+
+" ---------------- "
+" Plugin Bootstrap "
+" ---------------- "
+if executable('curl')
+	let target_path = expand('~/.vim/colors/gruvbox8.vim')
+	if !filereadable(target_path)
+		echo "Installing gruvbox colortheme..."
+		silent exec "!curl -fLo ~/.vim/colors/gruvbox8.vim --create-dirs https://codeberg.org/lifepillar/vim-gruvbox8/raw/commit/ee054a75163bdfcbbc98c19a9e70ec4ff8af5aee/colors/gruvbox8.vim"
+	endif
+else
+	echoerr "Curl is required to bootstrap colorscheme"
+	execute "q!"
+endif
+
+" -------- "
+" BEHAVIOR "
+" -------- "
+set mouse=a                       " Enable mouse support in all modes
+set confirm                       " Confirm when trying to quit without saving
+set clipboard=unnamedplus         " Use system clipboard
+if executable('wl-copy') && executable('wl-paste')
+	autocmd TextYankPost * if (v:event.operator == 'y' || v:event.operator == 'd') | silent! execute 'call system("wl-copy", @")' | endif
+	nnoremap <silent> p :let @+ = system('wl-paste --no-newline')<CR>"+p
+endif
+
+if has('persistent_undo')         " Enable per-file undo history
+	let target_path = expand('~/.vim/undo/')
+	if !isdirectory(target_path)
+		call mkdir(target_path, "p", 0700)
+	endif
+	let &undodir = target_path
+	set undofile
+endif
+set backspace=indent,eol,start    " Backspace over lines/indents
+set list                          " Show hidden characters
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+set splitbelow                    " Open new horizontal splits below
+set splitright                    " Open new vertical splits to the right
+set formatoptions+=j              " Delete comment character when joining lines
+set ttimeout                      " Make ESC more responsive
+set ttimeoutlen=100               " ^
+set updatetime=100                " Makes async functions more responsive
+set autoread                      " Autoupdate buffers on external edit
+
+" ---------- "
+" UI & THEME "
+" ---------- "
+set signcolumn=auto         " Display sign column when git signs are available
+set scrolloff=20            " Always keep at least 20 lines above and below cursor
+set showmode                " Show mode in modeline
+set ruler                   " Show cursor position in modeline
+set number                  " Show line numbers in the gutter
+set relativenumber          " Show relative line numbers for jumps
+set wrap                    " Wrap long lines...
+set linebreak               " ...but at word boundaries...
+set breakindent             " ...and while preserving indent
+syntax on                   " Enable syntax highlighting
+if (has("termguicolors"))
+	set termguicolors
+endif
+set background=dark
+colorscheme gruvbox8
+
+" ------ "
+" SEARCH "
+" ------ "
+set incsearch               " Highlight matches as you type
+set hlsearch                " Keep matches highlighted
+set ignorecase              " Case-insensitive search...
+set smartcase               " ...unless an uppercase letter is typed
+nnoremap <silent> <Esc> :nohlsearch<CR><Esc> " Clear highlighting when hitting escape
+
+" ----------- "
+" INDENTATION "
+" ----------- "
+set tabstop=4               " Insert 4 spaces for a tab
+set shiftwidth=4            " Indent width for auto-indent and >>
+set autoindent              " Copy indent from current line when starting a new one
+
+" --------------- "
+" Per File Config "
+" --------------- "
+filetype plugin indent on         " Enable filetype detection based behavior
+augroup spellcheck
+	autocmd!
+	autocmd FileType markdown,text setlocal spell dictionary+=/usr/share/dict/words complete+=k
+	autocmd BufNewFile,BufRead *.nf,nextflow.config set filetype=groovy
+augroup END
+
+" --------------- "
+" Builtin Plugins "
+" --------------- "
+" Correctly highlight $() and other modern affordances in filetype=sh.
+if !exists('g:is_posix') && !exists('g:is_bash') && !exists('g:is_kornshell') && !exists('g:is_dash')
+	let g:is_posix = 1
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+	runtime! macros/matchit.vim
+endif
+
+" Load matchparen if it hasn't been already
+if !exists('g:loaded_matchparen') && findfile('plugin/matchparen.vim', &rtp) ==# ''
+	runtime! plugin/matchparen.vim
+endif
+
+" Enable the :Man command shipped inside Vim's man filetype plugin.
+if exists(':Man') != 2 && !exists('g:loaded_man') && &filetype !=? 'man' && !has('nvim')
+	runtime! ftplugin/man.vim
+endif
